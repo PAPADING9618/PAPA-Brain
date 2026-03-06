@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>papa酱的工作台 🧠</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-light: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent-work: #3b82f6;
+            --accent-side: #8b5cf6;
+            --accent-hobby: #10b981;
+            --accent-growth: #f59e0b;
+            --danger: #ef4444;
+            --success: #22c55e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            color: var(--text);
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--surface-light);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--surface);
+            border: 2px solid var(--surface-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .header-info h1 {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+
+        .header-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: var(--surface);
+            border: 1px solid var(--surface-light);
+            color: var(--text);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: var(--surface-light);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--surface-light);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-action {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .card-action:hover {
+            text-decoration: underline;
+        }
+
+        /* 今日任务样式 */
+        .task-item {
+            background: var(--surface-light);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .task-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 6px;
+            margin-top: 2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .task-checkbox:hover {
+            border-color: var(--primary);
+        }
+
+        .task-checkbox.checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .task-title.completed {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .task-tag {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .tag-work { background: rgba(59, 130, 246, 0.2); color: var(--accent-work); }
+        .tag-side { background: rgba(139, 92, 246, 0.2); color: var(--accent-side); }
+        .tag-personal { background: rgba(16, 185, 129, 0.2); color: var(--accent-hobby); }
+        .tag-study { background: rgba(245, 158, 11, 0.2); color: var(--accent-growth); }
+
+        /* 项目进度样式 */
+        .project-item {
+            margin-bottom: 20px;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .project-name {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-status {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .status-active { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+        .status-pending { background: rgba(148, 163, 184, 0.2); color: var(--text-muted); }
+
+        .project-target {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--surface-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .progress-work { background: var(--accent-work); }
+        .progress-side { background: var(--accent-side); }
+        .progress-hobby { background: var(--accent-hobby); }
+        .progress-growth { background: var(--accent-growth); }
+        .progress-wedding { background: #ec4899; }
+
+        .progress-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        /* 快速链接 */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .tool-card {
+            background: var(--surface-light);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .tool-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .tool-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <div class="avatar">👨‍💻</div>
+            <div class="header-info">
+                <h1>papa酱的工作台</h1>
+                <p id="current-date">加载中...</p>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">🔒 退出</button>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- 今日任务 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">📋 今日任务</div>
+                <a href="kanban.html" class="card-action">查看看板 →</a>
+            </div>
+            <div id="today-tasks">
+                <div class="empty-state">
+                    <div class="empty-icon">📋</div>
+                    <div>加载中...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 项目追踪 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">🎯 项目追踪</div>
+                <a href="second-brain.html" class="card-action">查看详情 →</a>
+            </div>
+            <div id="project-list">
+                <div class="empty-state">
+                    <div class="empty-icon">🎯</div>
+                    <div>加载中...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速链接 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">🚀 快速链接</div>
+            </div>
+            <div class="tools-grid">
+                <a href="kanban.html" class="tool-card">
+                    <div class="tool-icon">📋</div>
+                    <div class="tool-name">任务看板</div>
+                </a>
+                <a href="second-brain.html" class="tool-card">
+                    <div class="tool-icon">🧠</div>
+                    <div class="tool-name">Second Brain</div>
+                </a>
+                <a href="https://github.com/PAPADING9618/PAPA-Brain" target="_blank" class="tool-card">
+                    <div class="tool-icon">📊</div>
+                    <div class="tool-name">GitHub 数据</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 检查登录状态
+        if (sessionStorage.getItem('papaBrainAuth') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        // 设置当前日期
+        function setCurrentDate() {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('current-date').textContent = date.toLocaleDateString('zh-CN', options);
+        }
+
+        // 加载数据
+        async function loadData() {
+            try {
+                const response = await fetch('data.json?v=' + Date.now());
+                const data = await response.json();
+                renderTodayTasks(data.tasks);
+                renderProjects(data.projects);
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                document.getElementById('today-tasks').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⚠️</div>
+                        <div>数据加载失败，请刷新重试</div>
+                    </div>
+                `;
+            }
+        }
+
+        // 渲染今日任务
+        function renderTodayTasks(tasks) {
+            const container = document.getElementById('today-tasks');
+            
+            // 获取今日待办和进行中的任务（最多显示5个）
+            const todayTasks = tasks
+                .filter(t => t.status !== 'done')
+                .sort((a, b) => {
+                    const priorityOrder = { high: 0, medium: 1, low: 2 };
+                    return priorityOrder[a.priority] - priorityOrder[b.priority];
+                })
+                .slice(0, 5);
+
+            if (todayTasks.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🎉</div>
+                        <div>今日任务已全部完成！</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = todayTasks.map(task => {
+                const tagClass = task.tags.includes('work') ? 'tag-work' : 
+                                task.tags.includes('side') ? 'tag-side' :
+                                task.tags.includes('personal') ? 'tag-personal' : 'tag-study';
+                const tagName = task.tags.includes('work') ? '💼 主业' : 
+                               task.tags.includes('side') ? '🎣 副业' :
+                               task.tags.includes('personal') ? '🏠 个人' : '📚 学习';
+                
+                return `
+                    <div class="task-item" onclick="window.location.href='kanban.html'">
+                        <div class="task-checkbox"></div>
+                        <div class="task-content">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-meta">
+                                <span class="task-tag ${tagClass}">${tagName}</span>
+                                <span>${task.priority === 'high' ? '🔥 高优先级' : task.priority === 'medium' ? '⚡ 中优先级' : '💤 低优先级'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 渲染项目进度
+        function renderProjects(projects) {
+            const container = document.getElementById('project-list');
+            
+            if (!projects || projects.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📋</div>
+                        <div>暂无项目</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = projects.map(project => {
+                let progressClass = 'progress-work';
+                if (project.name.includes('路亚')) progressClass = 'progress-side';
+                if (project.name.includes('阅读')) progressClass = 'progress-growth';
+                if (project.name.includes('婚礼')) progressClass = 'progress-wedding';
+                
+                return `
+                    <div class="project-item">
+                        <div class="project-header">
+                            <div class="project-name">${project.name}</div>
+                            <span class="project-status ${project.status === 'active' ? 'status-active' : 'status-pending'}">
+                                ${project.status === 'active' ? '🟢 进行中' : '⏸️ 暂停'}
+                            </span>
+                        </div>
+                        <div class="project-target">${project.target || project.description}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill ${progressClass}" style="width: ${project.progress || 0}%"></div>
+                        </div>
+                        <div class="progress-text">${project.progress || 0}% 完成</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 退出登录
+        function logout() {
+            sessionStorage.removeItem('papaBrainAuth');
+            window.location.href = 'index.html';
+        }
+
+        // 初始化
+        setCurrentDate();
+        loadData();
+    </script>
+</body>
+</html>
