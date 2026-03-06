@@ -155,7 +155,7 @@
         }
 
         function renderTasks(tasks) {
-            const tagColors = { work: 'tag-work', side: 'tag-side', personal: 'tag-personal', study: 'tag-study' };
+            const tagColors = { '工作': 'tag-work', '副业': 'tag-side', '个人': 'tag-personal', '学习': 'tag-study' };
             document.getElementById('tasks').innerHTML = tasks.map(t => `
                 <div class="task-item ${t.status}">
                     <span class="tag ${tagColors[t.tags?.[0]] || 'tag-work'}">${t.tags?.[0] || '其他'}</span>
