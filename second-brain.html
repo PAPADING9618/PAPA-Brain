@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 papa酱的 Second Brain</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --secondary: #764ba2;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-light: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-work: #3b82f6;
+            --accent-side: #8b5cf6;
+            --accent-fun: #10b981;
+            --accent-growth: #f59e0b;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.4);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: var(--surface);
+            border-right: 1px solid var(--surface-light);
+            padding: 24px 0;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            padding: 0 24px 24px;
+            border-bottom: 1px solid var(--surface-light);
+            margin-bottom: 16px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .nav-section {
+            padding: 16px 0;
+        }
+
+        .nav-title {
+            padding: 0 24px 8px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .nav-item.active {
+            background: rgba(102, 126, 234, 0.1);
+            border-left-color: var(--primary);
+        }
+
+        .nav-item-icon {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-item-text {
+            font-size: 0.95rem;
+        }
+
+        /* 主内容区 */
+        .main {
+            margin-left: 260px;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--surface-light);
+            padding: 20px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--surface-light);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* 内容区 */
+        .content {
+            padding: 32px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 仪表盘 */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--surface-light);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.work { background: rgba(59, 130, 246, 0.2); }
+        .stat-icon.side { background: rgba(139, 92, 246, 0.2); }
+        .stat-icon.fun { background: rgba(16, 185, 129, 0.2); }
+        .stat-icon.growth { background: rgba(245, 158, 11, 0.2); }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .stat-progress {
+            margin-top: 16px;
+            height: 6px;
+            background: var(--surface-light);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .stat-progress-bar {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .stat-progress-bar.work { background: var(--accent-work); }
+        .stat-progress-bar.side { background: var(--accent-side); }
+        .stat-progress-bar.fun { background: var(--accent-fun); }
+        .stat-progress-bar.growth { background: var(--accent-growth); }
+
+        /* 卡片布局 */
+        .section {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--surface-light);
+            margin-bottom: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 今日任务 */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .task-item:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: var(--surface-light);
+        }
+
+        .task-checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--surface-light);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .task-checkbox:hover {
+            border-color: var(--primary);
+        }
+
+        .task-checkbox.checked {
+            background: var(--accent-fun);
+            border-color: var(--accent-fun);
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .task-title.completed {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .task-tag {
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .tag-priority-high { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .tag-priority-medium { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .tag-priority-low { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+
+        /* 目标区域 */
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .goal-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--surface-light);
+            transition: all 0.3s;
+        }
+
+        .goal-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .goal-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .goal-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .goal-icon.career { background: rgba(59, 130, 246, 0.2); }
+        .goal-icon.content { background: rgba(139, 92, 246, 0.2); }
+        .goal-icon.hobby { background: rgba(16, 185, 129, 0.2); }
+        .goal-icon.growth { background: rgba(245, 158, 11, 0.2); }
+
+        .goal-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .goal-list {
+            list-style: none;
+        }
+
+        .goal-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--surface-light);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .goal-list li:last-child {
+            border-bottom: none;
+        }
+
+        .goal-list li::before {
+            content: "›";
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* 知识库 */
+        .kb-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .kb-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .kb-item:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: var(--primary);
+        }
+
+        .kb-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .kb-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .kb-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* 决策原则 */
+        .principle-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .principle-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .principle-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            font-size: 1rem;
+        }
+
+        .principle-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        /* 项目追踪 */
+        .project-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--surface-light);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .project-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .project-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .status-planning { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .status-paused { background: rgba(148, 163, 184, 0.2); color: #94a3b8; }
+
+        .project-progress {
+            height: 8px;
+            background: var(--surface-light);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .project-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 动画 */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* 时间显示 */
+        .time-display {
+            text-align: right;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .time-display .date {
+            font-weight: 600;
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+    <!-- 侧边栏 -->
+    <nav class="sidebar">
+        <div class="logo">
+            <h1>🧠 Second Brain</h1>
+            <p>papa酱的个人知识库</p>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">导航</div>
+            <div class="nav-item active" onclick="showPage('goals')">
+                <span class="nav-item-icon">🎯</span>
+                <span class="nav-item-text">目标规划</span>
+            </div>
+            <div class="nav-item" onclick="showPage('projects')">
+                <span class="nav-item-icon">🚀</span>
+                <span class="nav-item-text">项目追踪</span>
+            </div>
+            <div class="nav-item" onclick="showPage('knowledge')">
+                <span class="nav-item-icon">📚</span>
+                <span class="nav-item-text">知识库</span>
+            </div>
+            <div class="nav-item" onclick="showPage('automation')">
+                <span class="nav-item-icon">🤖</span>
+                <span class="nav-item-text">自动化任务</span>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">资源</div>
+            <div class="nav-item" onclick="showPage('notes')">
+                <span class="nav-item-icon">📝</span>
+                <span class="nav-item-text">笔记</span>
+            </div>
+            <div class="nav-item" onclick="showPage('resources')">
+                <span class="nav-item-icon">🔗</span>
+                <span class="nav-item-text">收藏</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main class="main">
+        <header class="header" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="home.html" style="background: var(--surface); border: 1px solid var(--surface-light); color: var(--text); padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 0.9rem; transition: all 0.2s;">← 返回工作台</a>
+            <h2 class="header-title" id="pageTitle">目标规划</h2>
+            <div class="header-actions">
+                <div class="time-display">
+                    <div class="date" id="currentDate">--</div>
+                    <div id="currentTime">--</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="content">
+            <!-- 目标页面 -->
+            <div class="page active" id="page-goals">
+                <div class="goals-grid" id="goals-container">
+                    <!-- 目标卡片将通过 JavaScript 动态加载 -->
+                    <div class="goal-card" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <p>加载中...</p>
+                    </div>
+                </div>
+                
+                <!-- 任务统计卡片 -->
+                <div class="principle-card" style="margin-top: 30px;">
+                    <h3 class="section-title" style="margin-bottom: 20px;">📊 自动化任务统计</h3>
+                    <ul class="principle-list">
+                        <li>
+                            <span class="principle-number" style="background: linear-gradient(135deg, #10b981, #059669);">8</span>
+                            <span>总自动化任务数</span>
+                        </li>
+                        <li>
+                            <span class="principle-number" style="background: linear-gradient(135deg, #22c55e, #16a34a);">6</span>
+                            <span>运行中</span>
+                        </li>
+                        <li>
+                            <span class="principle-number" style="background: linear-gradient(135deg, #ef4444, #dc2626);">2</span>
+                            <span>已禁用</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 项目页面 -->
+            <div class="page" id="page-projects">
+                <div class="section">
+                    <div class="section-header">
+                        <h3 class="section-title">🚀 进行中的项目</h3>
+                    </div>
+                    <div id="projects-container" class="task-list">
+                        <!-- 项目卡片将通过 JavaScript 动态加载 -->
+                        <div class="project-card" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 知识库页面 -->
+            <div class="page" id="page-knowledge">
+                <div class="section">
+                    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 class="section-title">📚 知识库</h3>
+                        <span id="knowledge-count" style="color: var(--text-muted); font-size: 0.9rem;">加载中...</span>
+                    </div>
+                    <div class="kb-grid" id="knowledge-grid">
+                        <!-- 知识库分类将从 data.json 动态加载 -->
+                    </div>
+                </div>
+                
+                <!-- 分类笔记列表（点击知识库分类后显示） -->
+                <div class="section" id="knowledge-notes-section" style="display: none; margin-top: 30px;">
+                    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <h3 class="section-title" id="knowledge-notes-title">分类笔记</h3>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <!-- 搜索框 -->
+                            <div style="position: relative;">
+                                <input type="text" id="knowledge-search-input" placeholder="搜索该分类..." style="padding: 8px 12px 8px 32px; border: 1px solid var(--surface-light); border-radius: 8px; background: var(--surface-light); color: var(--text); font-size: 0.9rem; width: 180px;" oninput="searchKnowledgeNotes(this.value)">
+                                <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted);">🔍</span>
+                            </div>
+                            <button onclick="showKnowledgeGrid()" style="background: var(--surface-light); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; color: var(--text); font-size: 0.85rem;">← 返回知识库</button>
+                        </div>
+                    </div>
+                    
+                    <!-- AI总结区域（知识库分类专属） -->
+                    <div id="knowledge-ai-summary" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border: 1px solid var(--primary); border-radius: 12px; padding: 16px; margin-bottom: 20px; display: none;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <h4 style="margin: 0; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                                <span>🤖</span> AI分类总结
+                                <span id="knowledge-ai-time" style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;"></span>
+                            </h4>
+                            <button onclick="generateKnowledgeAISummary()" id="knowledge-ai-btn" style="background: var(--primary); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; color: white; font-size: 0.8rem;">🔄 更新总结</button>
+                        </div>
+                        <div id="knowledge-ai-content" style="line-height: 1.6; color: var(--text);">加载中...</div>
+                    </div>
+                    
+                    <div class="task-list" id="knowledge-notes-list">
+                        <!-- 该分类下的笔记将在这里显示 -->
+                    </div>
+                    
+                    <div id="knowledge-search-empty" style="display: none; text-align: center; padding: 40px; color: var(--text-muted);">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">🔍</div>
+                        <div>未找到匹配的笔记</div>
+                        <div style="font-size: 0.85rem; margin-top: 8px;">尝试其他关键词</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 笔记页面 -->
+            <div class="page" id="page-notes">
+                <div class="section">
+                    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <h3 class="section-title">📝 最新笔记</h3>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <!-- 搜索框 -->
+                            <div style="position: relative;">
+                                <input type="text" id="note-search-input" placeholder="搜索笔记..." style="padding: 8px 12px 8px 32px; border: 1px solid var(--surface-light); border-radius: 8px; background: var(--surface-light); color: var(--text); font-size: 0.9rem; width: 200px;" oninput="searchNotes(this.value)">
+                                <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted);">🔍</span>
+                            </div>
+                            <button onclick="openNoteEditor()" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+                                <span>+</span> 新建笔记
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="task-list" id="notes-list">
+                        <!-- 笔记将从 data.json 动态加载 -->
+                    </div>
+                    
+                    <div id="notes-search-empty" style="display: none; text-align: center; padding: 40px; color: var(--text-muted);">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">🔍</div>
+                        <div>未找到匹配的笔记</div>
+                        <div style="font-size: 0.85rem; margin-top: 8px;">尝试其他关键词</div>
+                    </div>
+                </div>
+
+                <!-- 笔记编辑弹窗 -->
+                <div id="note-editor" class="note-detail" style="display: none;">
+                    <div class="modal" style="background: var(--surface); border-radius: 12px; padding: 24px; max-width: 800px; margin: 40px auto; max-height: 85vh; overflow-y: auto;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h2 id="editor-title">📝 新建笔记</h2>
+                            <button onclick="closeNoteEditor()" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">×</button>
+                        </div>
+                        
+                        <form id="note-form" onsubmit="saveNote(event)">
+                            <input type="hidden" id="note-id" value="">
+                            
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem;">笔记标题</label>
+                                <input type="text" id="note-title-input" required style="width: 100%; padding: 12px; border: 1px solid var(--surface-light); border-radius: 8px; background: var(--surface-light); color: var(--text); font-size: 1rem;" placeholder="输入笔记标题...">
+                            </div>
+                            
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem;">分类</label>
+                                <select id="note-category-input" style="width: 100%; padding: 12px; border: 1px solid var(--surface-light); border-radius: 8px; background: var(--surface-light); color: var(--text); font-size: 1rem;">
+                                    <option value="💒 婚礼">💒 婚礼</option>
+                                    <option value="📚 学习">📚 学习</option>
+                                    <option value="💼 工作">💼 工作</option>
+                                    <option value="🎣 路亚">🎣 路亚</option>
+                                    <option value="🤔 思考">🤔 思考</option>
+                                    <option value="📋 其他">📋 其他</option>
+                                </select>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem;">笔记内容（支持 Markdown 格式）</label>
+                                <textarea id="note-content-input" required style="width: 100%; padding: 12px; border: 1px solid var(--surface-light); border-radius: 8px; background: var(--surface-light); color: var(--text); font-size: 0.95rem; min-height: 300px; resize: vertical; font-family: inherit; line-height: 1.6;" placeholder="输入笔记内容...
+
+支持简单的 Markdown 格式：
+# 标题
+## 二级标题
+- 列表项
+**粗体**
+*斜体*
+--- 分割线"></textarea>
+                            </div>
+                            
+                            <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                                <button type="button" onclick="closeNoteEditor()" style="background: var(--surface-light); border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; color: var(--text);">取消</button>
+                                <button type="submit" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; color: white;">💾 保存笔记</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 西装定制方案详情弹窗 -->
+                <div id="note-wedding-suit" class="note-detail" style="display: none;">
+                    <div class="modal" style="background: var(--surface); border-radius: 12px; padding: 24px; max-width: 800px; margin: 40px auto; max-height: 80vh; overflow-y: auto;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h2>🤵 新郎西装定制方案</h2>
+                            <button onclick="hideNoteDetail('wedding-suit')" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">×</button>
+                        </div>
+                        
+                        <div class="note-content" style="line-height: 1.8;" data-note-content>
+                            <p><strong>预算：</strong>5000元</p>
+                            <p><strong>截止日期：</strong>5月31日前</p>
+                            <hr style="border: none; border-top: 1px solid var(--surface-light); margin: 20px 0;">
+                            
+                            <h3>方案A：沈阳本地上门定制（推荐）⭐</h3>
+                            <p><strong>沈阳欧伟呐服饰有限公司</strong></p>
+                            <ul>
+                                <li>📍 服务：免费上门量体、款式设计、制版打样</li>
+                                <li>💰 价格：¥4000-6000（符合预算）</li>
+                                <li>⏱️ 周期：30-45天</li>
+                                <li>🧵 面料：高支羊毛、真丝混纺等高品质面料</li>
+                                <li>🔧 售后：终身免费修改、保养指导</li>
+                                <li>📞 电话：15998888181</li>
+                                <li>✅ 优势：本地服务，有问题随时处理；深耕辽沈地区十余年</li>
+                            </ul>
+
+                            <h3>方案B：全国性上门定制品牌</h3>
+                            <p><strong>衣邦人</strong>（2016年已进入沈阳）</p>
+                            <ul>
+                                <li>📍 服务：APP/小程序预约，美女顾问免费上门量体</li>
+                                <li>💰 价格：¥2000-8000（5000元可选中高端面料）</li>
+                                <li>⏱️ 周期：10个工作日（更快）</li>
+                                <li>🧵 面料：全球直采奢华面料</li>
+                                <li>📱 预约：衣邦人APP/公众号</li>
+                            </ul>
+
+                            <h3>方案C：上海定制</h3>
+                            <p><strong>上海品牌定制店</strong></p>
+                            <ul>
+                                <li>🏪 推荐：报喜鸟、雅戈尔、Brooks Brothers</li>
+                                <li>💰 价格：¥5000-10000</li>
+                                <li>✅ 优势：品牌知名度高，款式更多</li>
+                                <li>❌ 劣势：需要亲自去上海2次（量体+取衣）</li>
+                            </ul>
+
+                            <hr style="border: none; border-top: 1px solid var(--surface-light); margin: 20px 0;">
+
+                            <h3>💡 建议</h3>
+                            <p><strong>首选：沈阳欧伟呐上门定制</strong></p>
+                            <ul>
+                                <li>✅ 本地服务，沟通方便</li>
+                                <li>✅ 终身售后，wedding后可继续修改</li>
+                                <li>✅ 预算内可以拿到很好的面料</li>
+                                <li>✅ 30-45天周期正好（8月30日婚礼，6月定制来得及）</li>
+                            </ul>
+
+                            <p><strong>备选：衣邦人</strong></p>
+                            <ul>
+                                <li>如果想要更快（10天出货）</li>
+                                <li>或者想先试试低价位的（2000-3000元档）</li>
+                            </ul>
+
+                            <hr style="border: none; border-top: 1px solid var(--surface-light); margin: 20px 0;">
+
+                            <h3>📞 本周行动</h3>
+                            <p><strong>明天（3月5日）可以做的：</strong></p>
+                            <ol>
+                                <li><strong>打电话咨询沈阳欧伟呐</strong> - 15998888181
+                                    <ul>
+                                        <li>问：婚礼西装定制5000元预算有什么面料？</li>
+                                        <li>问：最快什么时候可以上门量体？</li>
+                                        <li>问：是否支持加急？</li>
+                                    </ul>
+                                </li>
+                                <li><strong>或者下载衣邦人APP</strong> - 预约上门量体
+                                    <ul>
+                                        <li>先看看款式和价格</li>
+                                        <li>预约顾问上门</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 其他笔记详情弹窗（占位） -->
+                <div id="note-content-methodology" class="note-detail" style="display: none;">
+                    <div class="modal" style="background: var(--surface); border-radius: 12px; padding: 24px; max-width: 800px; margin: 40px auto; max-height: 80vh; overflow-y: auto;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h2>📚 《内容方法论》读书笔记</h2>
+                            <button onclick="hideNoteDetail('content-methodology')" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">×</button>
+                        </div>
+                        <div class="note-content" style="line-height: 1.8;" data-note-content>
+                            <p>笔记内容待补充...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="note-patient-management" class="note-detail" style="display: none;">
+                    <div class="modal" style="background: var(--surface); border-radius: 12px; padding: 24px; max-width: 800px; margin: 40px auto; max-height: 80vh; overflow-y: auto;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h2>🏥 患者管理商业化案例</h2>
+                            <button onclick="hideNoteDetail('patient-management')" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">×</button>
+                        </div>
+                        <div class="note-content" style="line-height: 1.8;" data-note-content>
+                            <p>笔记内容待补充...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 收藏页面 -->
+            <div class="page" id="page-resources">
+                <div class="section">
+                    <div class="section-header">
+                        <h3 class="section-title">🔗 资源收藏</h3>
+                    </div>
+                    <div class="kb-grid">
+                        <div class="kb-item" onclick="alert('打开链接...')">
+                            <div class="kb-icon">🛠️</div>
+                            <div class="kb-title">AI 工具箱</div>
+                            <div class="kb-desc">Claude、ChatGPT、Notion AI</div>
+                        </div>
+                        <div class="kb-item" onclick="alert('打开链接...')">
+                            <div class="kb-icon">📊</div>
+                            <div class="kb-title">数据分析工具</div>
+                            <div class="kb-desc">研究数据与可视化工具</div>
+                        </div>
+                        <div class="kb-item" onclick="alert('打开链接...')">
+                            <div class="kb-icon">🎬</div>
+                            <div class="kb-title">剪辑工具</div>
+                            <div class="kb-desc">剪映、CapCut 等</div>
+                        </div>
+                        <div class="kb-item" onclick="alert('打开链接...')">
+                            <div class="kb-icon">📚</div>
+                            <div class="kb-title">学习资源</div>
+                            <div class="kb-desc">在线课程与教程</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 自动化任务页面 -->
+            <div class="page" id="page-automation">
+                <div class="section">
+                    <div class="section-header">
+                        <h3 class="section-title">🤖 自动化任务清单</h3>
+                    </div>
+                    <div class="task-list">
+                        <div class="project-card">
+                            <div class="project-header">
+                                <span class="project-name">📋 papa酱每日任务规划</span>
+                                <span class="project-status status-active">运行中</span>
+                            </div>
+                            <div class="project-meta">
+                                <span>⏰ 每天 08:00</span>
+                                <span>📱 飞书消息</span>
+                            </div>
+                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
+                                自动生成当日任务清单并发送
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-header">
+                                <span class="project-name">📊 papa酱每日热点监测</span>
+                                <span class="project-status status-active">运行中</span>
+                            </div>
+                            <div class="project-meta">
+                                <span>⏰ 每天 20:00</span>
+                                <span>🔍 热点追踪 + 笔记生成</span>
+                            </div>
+                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
+                                监测热点、归档到data.json、生成热点笔记、推送到GitHub
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-header">
+                                <span class="project-name">🎣 papa酱每日路亚简报</span>
+                                <span class="project-status status-active">运行中</span>
+                            </div>
+                            <div class="project-meta">
+                                <span>⏰ 每天 22:00</span>
+                                <span>🎣 路亚资讯</span>
+                            </div>
+                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
+                                每日路亚天气简报（双渠道发送）
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-header">
+                                <span class="project-name">🔄 工作台双向同步</span>
+                                <span class="project-status status-active">运行中</span>
+                            </div>
+                            <div class="project-meta">
+                                <span>⏰ 每 4 小时</span>
+                                <span>💻 数据同步</span>
+                            </div>
+                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
+                                安全双向同步：先拉取→检查冲突→推送
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-header">
+                                <span class="project-name">📊 每日任务同步到飞书多维表格</span>
+                                <span class="project-status status-active">运行中</span>
+                            </div>
+                            <div class="project-meta">
+                                <span>⏰ 每天 08:00</span>
+                                <span>📋 多维表格</span>
+                            </div>
+                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
+                                将data.json中的任务同步到飞书多维表格
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-header">
+                                <span class="project-name">💒 婚礼规划每日跟进</span>
+                                <span class="project-status status-active">运行中</span>
+                            </div>
+                            <div class="project-meta">
+                                <span>⏰ 每天 10:00</span>
+                                <span>💍 婚礼筹备</span>
+                            </div>
+                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
+                                发送婚礼筹备日报（苏州5.22 + 沈阳8.30）
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-header">
+                                <span class="project-name">📅 每日飞书日历任务创建</span>
+                                <span class="project-status status-pending">已禁用</span>
+                            </div>
+                            <div class="project-meta">
+                                <span>⏰ 原每天 09:00</span>
+                                <span>📆 日历</span>
+                            </div>
+                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
+                                已改用多维表格管理任务
+                            </div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-header">
+                                <span class="project-name">🔑 飞书Token自动续期</span>
+                                <span class="project-status status-pending">已禁用</span>
+                            </div>
+                            <div class="project-meta">
+                                <span>⏰ 原每 2 小时</span>
+                                <span>🔐 权限管理</span>
+                            </div>
+                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
+                                用户要求取消，如需恢复可重新启用
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // 页面切换
+        function showPage(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // 显示目标页面
+            document.getElementById('page-' + pageId).classList.add('active');
+
+            // 更新导航激活状态
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            // 更新标题
+            const titles = {
+                'dashboard': '仪表盘',
+                'goals': '目标规划',
+                'projects': '项目追踪',
+                'knowledge': '知识库',
+                'notes': '笔记',
+                'resources': '资源收藏'
+            };
+            document.getElementById('pageTitle').textContent = titles[pageId] || pageId;
+        }
+
+        // 任务完成切换
+        function toggleTask(checkbox) {
+            checkbox.classList.toggle('checked');
+            checkbox.innerHTML = checkbox.classList.contains('checked') ? '✓' : '';
+            const title = checkbox.nextElementSibling.querySelector('.task-title');
+            title.classList.toggle('completed');
+        }
+
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('zh-CN', dateOptions);
+            document.getElementById('currentTime').textContent = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // 从 data.json 加载所有数据
+        async function loadAllData() {
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+                
+                // 加载项目
+                if (data.projects) {
+                    renderProjects(data.projects);
+                }
+                
+                // 加载目标
+                if (data.goals) {
+                    renderGoals(data.goals);
+                }
+                
+                // 加载决策原则
+                if (data.principles) {
+                    renderPrinciples(data.principles);
+                }
+                
+                // 加载笔记
+                if (data.notes) {
+                    allNotesData = data.notes; // 保存到全局变量
+                    renderNotes(data.notes);
+                }
+                
+                // 加载知识库
+                if (data.knowledge && data.notes) {
+                    renderKnowledge(data.knowledge, data.notes);
+                }
+                
+                console.log('✅ 已从 data.json 加载所有数据');
+            } catch (error) {
+                console.error('加载数据失败:', error);
+            }
+        }
+
+        // 渲染项目卡片
+        function renderProjects(projects) {
+            const container = document.getElementById('projects-container');
+            if (!projects || projects.length === 0) {
+                container.innerHTML = `
+                    <div class="project-card" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <p>暂无项目</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = projects.map(project => `
+                <div class="project-card">
+                    <div class="project-header">
+                        <span class="project-name">${project.name}</span>
+                        <span class="project-status status-${project.status}">${getStatusText(project.status)}</span>
+                    </div>
+                    <div class="project-progress">
+                        <div class="project-progress-bar" style="width: ${project.progress}%"></div>
+                    </div>
+                    <div class="project-meta">
+                        <span>📊 进度: ${project.progress}%</span>
+                        <span>🎯 ${project.target}</span>
+                    </div>
+                    <div class="project-meta" style="margin-top: 8px; font-size: 0.8rem; color: #94a3b8;">
+                        ${project.description}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+
+        // 渲染目标
+        function renderGoals(goals) {
+            const container = document.getElementById('goals-container');
+            if (!goals) {
+                container.innerHTML = `
+                    <div class="goal-card" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <p>暂无目标</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const goalIcons = {
+                'work': '💼',
+                'side': '📱',
+                'hobby': '🎣',
+                'growth': '📚',
+                'wedding': '💒'
+            };
+
+            const goalTitles = {
+                'work': '主业发展',
+                'side': '副业发展',
+                'hobby': '兴趣发展',
+                'growth': '个人成长',
+                'wedding': '婚礼筹备'
+            };
+
+            const goalClasses = {
+                'work': 'career',
+                'side': 'content',
+                'hobby': 'hobby',
+                'growth': 'growth',
+                'wedding': 'wedding'
+            };
+
+            let html = '';
+            for (const [key, goal] of Object.entries(goals)) {
+                if (goal && goal.items) {
+                    html += `
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <div class="goal-icon ${goalClasses[key] || 'growth'}">${goalIcons[key] || '🎯'}</div>
+                                <div class="goal-title">${goalTitles[key] || key}</div>
+                            </div>
+                            <ul class="goal-list">
+                                ${goal.items.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+            }
+
+            container.innerHTML = html || `
+                <div class="goal-card" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                    <p>暂无目标</p>
+                </div>
+            `;
+        }
+
+        // 渲染决策原则
+        function renderPrinciples(principles) {
+            const container = document.querySelector('.principle-list');
+            if (!container || !principles) return;
+
+            const html = principles.map((principle, index) => `
+                <li>
+                    <span class="principle-number">${index + 1}</span>
+                    <span>${principle}</span>
+                </li>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+
+        // 全局变量存储所有笔记数据
+        let allNotesData = [];
+
+        // 搜索笔记功能
+        function searchNotes(keyword) {
+            const container = document.getElementById('notes-list');
+            const emptyEl = document.getElementById('notes-search-empty');
+            const aiSummarySection = document.getElementById('ai-summary-section');
+            
+            if (!keyword.trim()) {
+                // 搜索为空，显示全部
+                renderNotes(allNotesData);
+                emptyEl.style.display = 'none';
+                if (aiSummarySection) aiSummarySection.style.display = 'block';
+                return;
+            }
+            
+            const lowerKeyword = keyword.toLowerCase();
+            const filtered = allNotesData.filter(note => {
+                // 搜索标题、分类、内容、日期
+                return (note.title && note.title.toLowerCase().includes(lowerKeyword)) ||
+                       (note.category && note.category.toLowerCase().includes(lowerKeyword)) ||
+                       (note.content && note.content.toLowerCase().includes(lowerKeyword)) ||
+                       (note.date && note.date.includes(keyword));
+            });
+            
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                emptyEl.style.display = 'block';
+                if (aiSummarySection) aiSummarySection.style.display = 'none';
+            } else {
+                renderNotes(filtered);
+                emptyEl.style.display = 'none';
+                if (aiSummarySection) aiSummarySection.style.display = 'block';
+            }
+        }
+
+        // 检查并显示AI总结
+        function renderNotes(notes) {
+            const container = document.getElementById('notes-list');
+            if (!container || !notes || notes.length === 0) {
+                if (container) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            <div class="empty-icon" style="font-size: 3rem; margin-bottom: 10px;">📝</div>
+                            <div>暂无笔记</div>
+                            <div style="font-size: 0.85rem; margin-top: 8px;">点击上方按钮创建你的第一条笔记</div>
+                        </div>
+                    `;
+                }
+                return;
+            }
+
+            const categoryIcons = {
+                '学习': '📚',
+                '婚礼': '💒',
+                '工作': '💼',
+                '路亚': '🎣',
+                '思考': '🤔',
+                '其他': '📋'
+            };
+
+            const html = notes.map(note => {
+                const icon = categoryIcons[note.category] || '📄';
+                return `
+                    <div class="task-item" data-note-id="${note.id}">
+                        <div class="task-content" onclick="showNoteDetail('${note.id}')" style="cursor: pointer; flex: 1;">
+                            <div class="task-title">${icon} ${note.title}</div>
+                            <div class="task-meta">
+                                <span>${note.category}</span>
+                                <span>🕐 ${note.date}</span>
+                            </div>
+                        </div>
+                        <div class="note-actions" style="display: flex; gap: 8px; margin-left: 12px;">
+                            <button onclick="event.stopPropagation(); editNote('${note.id}')" style="background: var(--surface-light); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; color: var(--text); font-size: 0.8rem;">✏️ 编辑</button>
+                            <button onclick="event.stopPropagation(); deleteNote('${note.id}')" style="background: rgba(239, 68, 68, 0.1); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; color: #ef4444; font-size: 0.8rem;">🗑️ 删除</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = html;
+        }
+
+        // 获取状态文本
+        function getStatusText(status) {
+            const statusMap = {
+                'active': '进行中',
+                'completed': '已完成',
+                'pending': '待开始',
+                'paused': '已暂停'
+            };
+            return statusMap[status] || status;
+        }
+
+        // 显示笔记详情
+        async function showNoteDetail(noteId) {
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+                const note = data.notes.find(n => n.id === noteId);
+                
+                if (!note) {
+                    alert('笔记不存在');
+                    return;
+                }
+                
+                // 创建动态弹窗
+                const modal = document.createElement('div');
+                modal.id = `dynamic-note-${noteId}`;
+                modal.className = 'note-detail';
+                modal.style.cssText = 'display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; overflow: auto;';
+                
+                const icon = note.category === '婚礼' ? '💒' : note.category === '学习' ? '📚' : '📄';
+                
+                // 简单的 Markdown 转 HTML
+                let contentHtml = note.content 
+                    ? note.content
+                        .replace(/^# (.*$)/gim, '<h1 style="color: var(--text); margin: 20px 0;">$1</h1>')
+                        .replace(/^## (.*$)/gim, '<h2 style="color: var(--text); margin: 18px 0;">$1</h2>')
+                        .replace(/^### (.*$)/gim, '<h3 style="color: var(--text); margin: 16px 0;">$1</h3>')
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\n/g, '<br>')
+                    : '<p style="color: var(--text-muted);">暂无内容</p>';
+                
+                modal.innerHTML = `
+                    <div class="modal" style="background: var(--surface); border-radius: 12px; padding: 24px; max-width: 800px; margin: 40px auto; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--surface-light); padding-bottom: 15px;">
+                            <h2 style="color: var(--text); margin: 0;">${icon} ${note.title}</h2>
+                            <button onclick="hideDynamicNote('${noteId}')" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: all 0.2s;">×</button>
+                        </div>
+                        <div style="display: flex; gap: 15px; margin-bottom: 20px; font-size: 0.85rem; color: var(--text-muted);">
+                            <span>🏷️ ${note.category}</span>
+                            <span>🕐 ${note.date}</span>
+                        </div>
+                        <div class="note-content" style="line-height: 1.8; color: var(--text);">
+                            ${contentHtml}
+                        </div>
+                        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--surface-light); display: flex; gap: 10px; justify-content: flex-end;">
+                            <button onclick="hideDynamicNote('${noteId}')" style="background: var(--surface-light); border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; color: var(--text);">关闭</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+            } catch (error) {
+                console.error('加载笔记失败:', error);
+                alert('加载笔记失败，请重试');
+            }
+        }
+        
+        // 隐藏动态笔记弹窗
+        function hideDynamicNote(noteId) {
+            const modal = document.getElementById(`dynamic-note-${noteId}`);
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // 隐藏笔记详情（保留用于兼容旧的硬编码弹窗）
+        function hideNoteDetail(noteId) {
+            const noteElement = document.getElementById('note-' + noteId);
+            if (noteElement) {
+                noteElement.style.display = 'none';
+            }
+            // 同时检查动态弹窗
+            hideDynamicNote(noteId);
+        }
+
+        // 打开笔记编辑器（新建）
+        function openNoteEditor() {
+            document.getElementById('editor-title').textContent = '📝 新建笔记';
+            document.getElementById('note-id').value = '';
+            document.getElementById('note-title-input').value = '';
+            document.getElementById('note-category-input').value = '📋 其他';
+            document.getElementById('note-content-input').value = '';
+            
+            const editor = document.getElementById('note-editor');
+            editor.style.display = 'block';
+            editor.style.position = 'fixed';
+            editor.style.top = '0';
+            editor.style.left = '0';
+            editor.style.width = '100%';
+            editor.style.height = '100%';
+            editor.style.background = 'rgba(0, 0, 0, 0.7)';
+            editor.style.zIndex = '1001';
+            editor.style.overflow = 'auto';
+        }
+
+        // 关闭笔记编辑器
+        function closeNoteEditor() {
+            const editor = document.getElementById('note-editor');
+            editor.style.display = 'none';
+        }
+
+        // 编辑笔记
+        function editNote(noteId) {
+            const noteElement = document.querySelector(`[data-note-id="${noteId}"]`);
+            if (!noteElement) return;
+
+            // 获取笔记信息
+            const titleEl = noteElement.querySelector('.task-title');
+            const metaEl = noteElement.querySelector('.task-meta');
+            
+            const title = titleEl.textContent.replace(/^[^\s]+\s/, ''); // 移除emoji
+            const category = metaEl.children[0].textContent;
+            
+            // 从详情弹窗获取内容
+            const detailElement = document.getElementById('note-' + noteId);
+            let content = '';
+            if (detailElement) {
+                const contentEl = detailElement.querySelector('[data-note-content]');
+                if (contentEl) {
+                    content = contentEl.innerHTML
+                        .replace(/<h3>/g, '### ')
+                        .replace(/<\/h3>/g, '\n')
+                        .replace(/<p>/g, '')
+                        .replace(/<\/p>/g, '\n')
+                        .replace(/<ul>/g, '')
+                        .replace(/<\/ul>/g, '')
+                        .replace(/<li>/g, '- ')
+                        .replace(/<\/li>/g, '\n')
+                        .replace(/<ol>/g, '')
+                        .replace(/<\/ol>/g, '')
+                        .replace(/<strong>/g, '**')
+                        .replace(/<\/strong>/g, '**')
+                        .replace(/<hr[^>]*>/g, '---\n')
+                        .replace(/<[^>]+>/g, '')
+                        .trim();
+                }
+            }
+
+            // 填充表单
+            document.getElementById('editor-title').textContent = '✏️ 编辑笔记';
+            document.getElementById('note-id').value = noteId;
+            document.getElementById('note-title-input').value = title;
+            document.getElementById('note-category-input').value = category;
+            document.getElementById('note-content-input').value = content || '笔记内容...';
+
+            // 显示编辑器
+            const editor = document.getElementById('note-editor');
+            editor.style.display = 'block';
+            editor.style.position = 'fixed';
+            editor.style.top = '0';
+            editor.style.left = '0';
+            editor.style.width = '100%';
+            editor.style.height = '100%';
+            editor.style.background = 'rgba(0, 0, 0, 0.7)';
+            editor.style.zIndex = '1001';
+            editor.style.overflow = 'auto';
+        }
+
+        // 保存笔记
+        function saveNote(event) {
+            event.preventDefault();
+            
+            const noteId = document.getElementById('note-id').value;
+            const title = document.getElementById('note-title-input').value;
+            const category = document.getElementById('note-category-input').value;
+            const content = document.getElementById('note-content-input').value;
+            
+            if (!title || !content) {
+                alert('请填写标题和内容');
+                return;
+            }
+
+            const date = new Date().toISOString().split('T')[0];
+            const newNoteId = noteId || 'note-' + Date.now();
+            
+            // 获取emoji
+            const categoryEmoji = category.split(' ')[0];
+            
+            if (noteId) {
+                // 编辑现有笔记
+                const noteElement = document.querySelector(`[data-note-id="${noteId}"]`);
+                if (noteElement) {
+                    noteElement.querySelector('.task-title').textContent = categoryEmoji + ' ' + title;
+                    noteElement.querySelector('.task-meta').innerHTML = `
+                        <span>${category}</span>
+                        <span>🕐 ${date}</span>
+                    `;
+                }
+                
+                // 更新详情弹窗内容
+                const detailElement = document.getElementById('note-' + noteId);
+                if (detailElement) {
+                    const contentEl = detailElement.querySelector('[data-note-content]');
+                    if (contentEl) {
+                        contentEl.innerHTML = formatNoteContent(content);
+                    }
+                }
+                
+                alert('笔记已更新！');
+            } else {
+                // 创建新笔记
+                const notesList = document.getElementById('notes-list');
+                const newNoteHtml = `
+                    <div class="task-item" data-note-id="${newNoteId}">
+                        <div class="task-content" onclick="showNoteDetail('${newNoteId}')" style="cursor: pointer; flex: 1;">
+                            <div class="task-title">${categoryEmoji} ${title}</div>
+                            <div class="task-meta">
+                                <span>${category}</span>
+                                <span>🕐 ${date}</span>
+                            </div>
+                        </div>
+                        <div class="note-actions" style="display: flex; gap: 8px; margin-left: 12px;">
+                            <button onclick="event.stopPropagation(); editNote('${newNoteId}')" style="background: var(--surface-light); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; color: var(--text); font-size: 0.8rem;">✏️ 编辑</button>
+                            <button onclick="event.stopPropagation(); deleteNote('${newNoteId}')" style="background: rgba(239, 68, 68, 0.1); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; color: #ef4444; font-size: 0.8rem;">🗑️ 删除</button>
+                        </div>
+                    </div>
+                `;
+                notesList.insertAdjacentHTML('afterbegin', newNoteHtml);
+                
+                // 创建详情弹窗
+                createNoteDetailModal(newNoteId, categoryEmoji + ' ' + title, content);
+                
+                alert('笔记已创建！');
+            }
+            
+            closeNoteEditor();
+            
+            // 保存到本地存储
+            saveNotesToStorage();
+        }
+
+        // 格式化笔记内容（简单 Markdown 转 HTML）
+        function formatNoteContent(content) {
+            return content
+                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+                .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                .replace(/^- (.+)$/gm, '<li>$1</li>')
+                .replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>')
+                .replace(/^---$/gm, '<hr style="border: none; border-top: 1px solid var(--surface-light); margin: 20px 0;">')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>')
+                .replace(/^(.+)$/gm, '<p>$1</p>')
+                .replace(/<p><h([12])>/g, '<h$1>')
+                .replace(/<\/h([12])><\/p>/g, '</h$1>')
+                .replace(/<p><li>/g, '<li>')
+                .replace(/<\/li><\/p>/g, '</li>')
+                .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+        }
+
+        // 创建笔记详情弹窗
+        function createNoteDetailModal(noteId, title, content) {
+            const modalHtml = `
+                <div id="note-${noteId}" class="note-detail" style="display: none;">
+                    <div class="modal" style="background: var(--surface); border-radius: 12px; padding: 24px; max-width: 800px; margin: 40px auto; max-height: 80vh; overflow-y: auto;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h2>${title}</h2>
+                            <button onclick="hideNoteDetail('${noteId}')" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">×</button>
+                        </div>
+                        <div class="note-content" style="line-height: 1.8;" data-note-content>
+                            ${formatNoteContent(content)}
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+
+        // 删除笔记
+        function deleteNote(noteId) {
+            if (!confirm('确定要删除这条笔记吗？')) {
+                return;
+            }
+            
+            const noteElement = document.querySelector(`[data-note-id="${noteId}"]`);
+            if (noteElement) {
+                noteElement.remove();
+            }
+            
+            // 删除详情弹窗
+            const detailElement = document.getElementById('note-' + noteId);
+            if (detailElement) {
+                detailElement.remove();
+            }
+            
+            // 保存到本地存储
+            saveNotesToStorage();
+            
+            alert('笔记已删除！');
+        }
+
+        // 保存笔记到本地存储
+        function saveNotesToStorage() {
+            const notes = [];
+            document.querySelectorAll('#notes-list .task-item').forEach(item => {
+                const noteId = item.getAttribute('data-note-id');
+                const title = item.querySelector('.task-title').textContent;
+                const category = item.querySelector('.task-meta span:first-child').textContent;
+                const date = item.querySelector('.task-meta span:last-child').textContent.replace('🕐 ', '');
+                
+                // 获取内容
+                const detailElement = document.getElementById('note-' + noteId);
+                let content = '';
+                if (detailElement) {
+                    const contentEl = detailElement.querySelector('[data-note-content]');
+                    if (contentEl) {
+                        content = contentEl.innerHTML;
+                    }
+                }
+                
+                notes.push({ id: noteId, title, category, date, content });
+            });
+            
+            localStorage.setItem('second-brain-notes', JSON.stringify(notes));
+        }
+
+        // 从本地存储加载笔记
+        function loadNotesFromStorage() {
+            const saved = localStorage.getItem('second-brain-notes');
+            if (saved) {
+                // 这里可以实现从存储恢复笔记的逻辑
+                console.log('已加载保存的笔记:', JSON.parse(saved));
+            }
+        }
+
+        // 保存任务状态到本地存储
+        function saveTasks() {
+            const tasks = [];
+            document.querySelectorAll('.task-item').forEach(item => {
+                const checkbox = item.querySelector('.task-checkbox');
+                const title = item.querySelector('.task-title').textContent;
+                tasks.push({
+                    title: title,
+                    completed: checkbox.classList.contains('checked')
+                });
+            });
+            localStorage.setItem('second-brain-tasks', JSON.stringify(tasks));
+        }
+
+        // 加载任务状态
+        function loadTasks() {
+            const saved = localStorage.getItem('second-brain-tasks');
+            if (saved) {
+                const tasks = JSON.parse(saved);
+                // 这里可以实现更复杂的任务恢复逻辑
+            }
+        }
+
+        // 渲染知识库分类
+        function renderKnowledge(knowledgeList, allNotes) {
+            const container = document.getElementById('knowledge-grid');
+            const countEl = document.getElementById('knowledge-count');
+            
+            if (!knowledgeList || knowledgeList.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-muted);">暂无知识库分类</div>';
+                countEl.textContent = '';
+                return;
+            }
+            
+            // 更新实际笔记数量
+            knowledgeList.forEach(kb => {
+                kb.noteCount = allNotes.filter(n => n.category === kb.category).length;
+            });
+            
+            const totalNotes = allNotes.length;
+            countEl.textContent = `共 ${knowledgeList.length} 个分类 · ${totalNotes} 条笔记`;
+            
+            const html = knowledgeList.map(kb => `
+                <div class="kb-item" onclick="showKnowledgeNotes('${kb.id}', '${kb.category}')">
+                    <div class="kb-icon">${kb.icon}</div>
+                    <div class="kb-title">${kb.title}</div>
+                    <div class="kb-desc">${kb.description}</div>
+                    <div style="margin-top: 8px; font-size: 0.75rem; color: var(--primary);">${kb.noteCount} 条笔记</div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = html;
+        }
+        
+        // 全局变量存储当前知识库分类的笔记
+        let currentKnowledgeNotes = [];
+        let currentKnowledgeCategory = '';
+
+        // 显示知识库分类下的笔记
+        async function showKnowledgeNotes(kbId, category) {
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+                
+                const knowledge = data.knowledge?.find(k => k.id === kbId);
+                const notes = data.notes?.filter(n => n.category === category) || [];
+                
+                // 保存到全局变量
+                currentKnowledgeNotes = notes;
+                currentKnowledgeCategory = category;
+                
+                // 隐藏知识库网格，显示笔记列表
+                document.getElementById('knowledge-grid').style.display = 'none';
+                document.getElementById('knowledge-count').style.display = 'none';
+                
+                const notesSection = document.getElementById('knowledge-notes-section');
+                const notesTitle = document.getElementById('knowledge-notes-title');
+                const notesList = document.getElementById('knowledge-notes-list');
+                
+                notesTitle.innerHTML = `${knowledge?.icon || '📚'} ${knowledge?.title || category} · ${notes.length} 条笔记`;
+                
+                // 渲染笔记
+                renderKnowledgeNotesList(notes);
+                
+                // 显示AI总结区域
+                checkAndShowKnowledgeAISummary(knowledge?.title || category, notes);
+                
+                // 清空搜索框
+                document.getElementById('knowledge-search-input').value = '';
+                document.getElementById('knowledge-search-empty').style.display = 'none';
+                
+                notesSection.style.display = 'block';
+                
+            } catch (error) {
+                console.error('加载分类笔记失败:', error);
+                alert('加载失败，请重试');
+            }
+        }
+        
+        // 渲染知识库分类笔记列表
+        function renderKnowledgeNotesList(notes) {
+            const notesList = document.getElementById('knowledge-notes-list');
+            
+            if (notes.length === 0) {
+                notesList.innerHTML = `
+                    <div class="empty-state" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <div class="empty-icon" style="font-size: 3rem;">📝</div>
+                        <div>该分类下暂无笔记</div>
+                        <div style="font-size: 0.85rem; margin-top: 10px;">点击"新建笔记"创建第一条</div>
+                    </div>
+                `;
+            } else {
+                notesList.innerHTML = notes.map(note => {
+                    const icon = note.category === '婚礼' ? '💒' : note.category === '学习' ? '📚' : '📄';
+                    return `
+                        <div class="task-item" data-note-id="${note.id}" style="cursor: pointer;" onclick="showNoteDetail('${note.id}')">
+                            <div class="task-content" style="flex: 1;">
+                                <div class="task-title">${icon} ${note.title}</div>
+                                <div class="task-meta">
+                                    <span>🕐 ${note.date}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+        
+        // 搜索知识库分类笔记
+        function searchKnowledgeNotes(keyword) {
+            const notesList = document.getElementById('knowledge-notes-list');
+            const emptyEl = document.getElementById('knowledge-search-empty');
+            
+            if (!keyword.trim()) {
+                // 搜索为空，显示全部
+                renderKnowledgeNotesList(currentKnowledgeNotes);
+                emptyEl.style.display = 'none';
+                return;
+            }
+            
+            const lowerKeyword = keyword.toLowerCase();
+            const filtered = currentKnowledgeNotes.filter(note => {
+                return (note.title && note.title.toLowerCase().includes(lowerKeyword)) ||
+                       (note.content && note.content.toLowerCase().includes(lowerKeyword)) ||
+                       (note.date && note.date.includes(keyword));
+            });
+            
+            if (filtered.length === 0) {
+                notesList.innerHTML = '';
+                emptyEl.style.display = 'block';
+            } else {
+                renderKnowledgeNotesList(filtered);
+                emptyEl.style.display = 'none';
+            }
+        }
+        
+        // 检查并显示知识库分类AI总结
+        async function checkAndShowKnowledgeAISummary(categoryName, notes) {
+            const summarySection = document.getElementById('knowledge-ai-summary');
+            const summaryContent = document.getElementById('knowledge-ai-content');
+            const summaryTime = document.getElementById('knowledge-ai-time');
+            
+            if (!summarySection) return;
+            
+            // 从localStorage读取缓存（按分类存储）
+            const cacheKey = `knowledge_ai_summary_${currentKnowledgeCategory}`;
+            const timeKey = `knowledge_ai_summary_time_${currentKnowledgeCategory}`;
+            const cached = localStorage.getItem(cacheKey);
+            const cachedTime = localStorage.getItem(timeKey);
+            
+            if (cached && cachedTime) {
+                const hoursDiff = (Date.now() - parseInt(cachedTime)) / (1000 * 60 * 60);
+                
+                if (hoursDiff < 24) {
+                    // 缓存有效（24小时内）
+                    summaryContent.innerHTML = cached;
+                    summaryTime.textContent = `(更新于 ${new Date(parseInt(cachedTime)).toLocaleString('zh-CN')})`;
+                    summarySection.style.display = 'block';
+                    return;
+                }
+            }
+            
+            // 显示区域但提示需要生成
+            summaryContent.innerHTML = `<p style="color: var(--text-muted);">🤖 AI总结可以帮助你快速了解「${categoryName}」分类的核心内容<br>点击右上角"更新总结"按钮生成（每日0点自动更新）</p>`;
+            summaryTime.textContent = '';
+            summarySection.style.display = 'block';
+        }
+        
+        // 生成知识库分类AI总结
+        async function generateKnowledgeAISummary() {
+            const summaryContent = document.getElementById('knowledge-ai-content');
+            const summaryTime = document.getElementById('knowledge-ai-time');
+            const btn = document.getElementById('knowledge-ai-btn');
+            
+            if (currentKnowledgeNotes.length === 0) {
+                summaryContent.innerHTML = '<p style="color: var(--text-muted);">该分类下暂无笔记可供总结</p>';
+                return;
+            }
+            
+            // 显示加载状态
+            btn.disabled = true;
+            btn.textContent = '⏳ 生成中...';
+            summaryContent.innerHTML = '<p style="color: var(--text-muted);">🤖 AI正在分析该分类内容，请稍候...</p>';
+            
+            try {
+                // 分析笔记内容
+                const totalNotes = currentKnowledgeNotes.length;
+                const recentNotes = currentKnowledgeNotes.slice(0, 5); // 最近5条
+                
+                // 提取内容关键词和主题
+                const allContent = currentKnowledgeNotes.map(n => n.content || '').join(' ');
+                const hasWeather = allContent.includes('天气') || allContent.includes('气温') || allContent.includes('气压');
+                const hasLocation = allContent.includes('标点') || allContent.includes('钓点') || allContent.includes('位置');
+                const hasBait = allContent.includes('用饵') || allContent.includes('米诺') || allContent.includes('VIB') || allContent.includes('假饵');
+                const hasTechnique = allContent.includes('手法') || allContent.includes('操作') || allContent.includes('收线');
+                
+                // 提取关键信息摘要
+                const contentHighlights = recentNotes.map(note => {
+                    const lines = (note.content || '').split('\n').filter(l => l.trim());
+                    const keyPoints = lines.filter(line => 
+                        line.includes('##') || 
+                        line.includes('**') || 
+                        line.startsWith('- ') ||
+                        line.includes('建议') ||
+                        line.includes('推荐')
+                    ).slice(0, 3);
+                    return {
+                        title: note.title,
+                        date: note.date,
+                        keyPoints: keyPoints
+                    };
+                });
+                
+                // 构建深度总结HTML
+                let summaryHtml = `
+                    <div style="margin-bottom: 16px;">
+                        <strong>📊 知识库概况</strong>
+                        <p style="margin: 8px 0; color: var(--text-muted);">
+                            「${currentKnowledgeCategory}」分类共有 <strong style="color: var(--text);">${totalNotes}</strong> 条笔记，
+                            涵盖 ${hasWeather ? '天气分析、' : ''}${hasLocation ? '钓点标点、' : ''}${hasBait ? '用饵选择、' : ''}${hasTechnique ? '操作手法' : ''}等核心知识点。
+                        </p>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <strong>🎯 核心要点提炼</strong>
+                        <div style="margin: 8px 0;">
+                            ${contentHighlights.map(hl => `
+                                <div style="background: var(--surface-light); border-radius: 8px; padding: 12px; margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: var(--text); margin-bottom: 6px;">📄 ${hl.title}</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-muted);">
+                                        ${hl.keyPoints.map(kp => `
+                                            <div style="margin: 4px 0; padding-left: 8px; border-left: 2px solid var(--primary);">${kp.replace(/[#*]/g, '').trim()}</div>
+                                        `).join('') || '<div style="color: var(--text-muted);">暂无关键要点</div>'}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <strong>💡 知识洞察</strong>
+                        <ul style="margin: 8px 0; padding-left: 18px; color: var(--text-muted);">
+                            ${hasWeather ? '<li>天气因素是该分类笔记的重点关注内容，建议结合实时天气预报调整钓法</li>' : ''}
+                            ${hasLocation ? '<li>钓点/标点信息丰富，可根据季节和鱼种选择合适的作钓位置</li>' : ''}
+                            ${hasBait ? '<li>用饵方案多样化，建议根据实际情况灵活选择假饵类型</li>' : ''}
+                            ${hasTechnique ? '<li>操作手法有详细记录，新手可参考学习基础技巧</li>' : ''}
+                            <li>建议定期回顾笔记，形成自己的知识体系和方法论</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <strong>📖 阅读建议</strong>
+                        <p style="margin: 8px 0; color: var(--text-muted);">
+                            建议按时间倒序阅读（从新到旧），优先查看最新笔记获取最新经验。
+                            ${totalNotes > 5 ? '笔记较多时，可使用上方搜索框快速定位特定内容。' : ''}
+                        </p>
+                    </div>
+                `;
+                
+                // 保存到缓存
+                const cacheKey = `knowledge_ai_summary_${currentKnowledgeCategory}`;
+                const timeKey = `knowledge_ai_summary_time_${currentKnowledgeCategory}`;
+                localStorage.setItem(cacheKey, summaryHtml);
+                localStorage.setItem(timeKey, Date.now().toString());
+                
+                summaryContent.innerHTML = summaryHtml;
+                summaryTime.textContent = '(刚刚更新)';
+                
+            } catch (error) {
+                console.error('生成AI总结失败:', error);
+                summaryContent.innerHTML = '<p style="color: var(--danger);">❌ 生成失败，请重试</p>';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🔄 更新总结';
+            }
+        }
+
+        // 返回知识库网格视图
+        function showKnowledgeGrid() {
+            document.getElementById('knowledge-grid').style.display = 'grid';
+            document.getElementById('knowledge-count').style.display = 'inline';
+            document.getElementById('knowledge-notes-section').style.display = 'none';
+            currentKnowledgeNotes = [];
+            currentKnowledgeCategory = '';
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTasks();
+            loadNotesFromStorage();
+            loadAllData(); // 从 data.json 动态加载所有数据
+        });
+    </script>
+</body>
+</html>
+<!-- cache-buster: 1772682650 -->

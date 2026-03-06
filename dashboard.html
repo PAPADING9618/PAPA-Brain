@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小小pa 工作看板 - papa酱</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+        h1 { font-size: 28px; margin-bottom: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .subtitle { font-size: 14px; opacity: 0.9; }
+        
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+        
+        /* Board */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .column {
+            border-radius: 16px;
+            padding: 20px;
+            min-height: 400px;
+        }
+        .todo { background: #e2e8f0; }
+        .inprogress { background: #dbeafe; }
+        .done { background: #dcfce7; }
+        
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+        .column-title { font-size: 16px; font-weight: 600; }
+        .count {
+            background: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+        .card-desc { font-size: 13px; color: #64748b; line-height: 1.5; }
+        .card-meta { font-size: 11px; color: #94a3b8; margin-top: 8px; }
+        
+        /* Second Brain Section */
+        .brain-section {
+            margin-top: 40px;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .brain-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e5e5e5;
+        }
+        .brain-title { font-size: 20px; font-weight: 600; }
+        
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 6px 12px;
+            border: 1px solid #e5e5e5;
+            border-radius: 6px;
+            background: #f9fafb;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .filter-btn.active { background: #171717; color: white; }
+        
+        /* Memory Items */
+        .memory-item {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .memory-item:last-child { border-bottom: none; }
+        .memory-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 6px;
+            align-items: center;
+        }
+        .memory-type {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .type-memory { background: #3b82f620; color: #3b82f6; }
+        .type-conversation { background: #8b5cf620; color: #8b5cf6; }
+        .type-note { background: #10b98120; color: #10b981; }
+        .type-task { background: #f59e0b20; color: #f59e0b; }
+        .type-goal { background: #ef444420; color: #ef4444; }
+        
+        .memory-title { font-size: 14px; font-weight: 600; }
+        .memory-content { font-size: 13px; color: #666; margin: 6px 0; line-height: 1.6; }
+        .memory-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+        .tag { font-size: 11px; color: #999; }
+        
+        .date-group {
+            font-size: 13px;
+            color: #999;
+            margin: 15px 0 10px;
+            padding-left: 8px;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: white;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Kanban Board -->
+        <header>
+            <h1>🎯 小小pa 任务看板</h1>
+            <p class="subtitle">为 papa酱 服务的任务追踪系统</p>
+            <div class="stats">
+                <span class="stat-item">📋 待办: 2</span>
+                <span class="stat-item">🔄 进行中: 2</span>
+                <span class="stat-item">✅ 已完成: 4</span>
+                <span class="stat-item">🕐 更新于: 2026/3/3</span>
+            </div>
+        </header>
+        
+        <div class="board">
+            <!-- To Do -->
+            <div class="column todo">
+                <div class="column-header">
+                    <span class="column-title">📋 待办 (To Do)</span>
+                    <span class="count">2</span>
+                </div>
+                <div class="card">
+                    <div class="card-title">🎨 小红书内容创作</div>
+                    <div class="card-desc">协助papa酱撰写小红书笔记和生成封面</div>
+                    <div class="card-meta">创建于: 2026-03-03</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📹 脚本和分镜协助</div>
+                    <div class="card-desc">协助撰写抖音视频脚本和分镜设计</div>
+                    <div class="card-meta">创建于: 2026-03-03</div>
+                </div>
+            </div>
+            
+            <!-- In Progress -->
+            <div class="column inprogress">
+                <div class="column-header">
+                    <span class="column-title">🔄 进行中 (In Progress)</span>
+                    <span class="count">2</span>
+                </div>
+                <div class="card">
+                    <div class="card-title">🔥 每日热点监测</div>
+                    <div class="card-desc">每天晚上8点监测抖音路亚相关热榜</div>
+                    <div class="card-meta">创建于: 2026-03-03</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📋 每周数据报表</div>
+                    <div class="card-desc">每周日上午9点生成热点分析和数据追踪报告</div>
+                    <div class="card-meta">创建于: 2026-03-03</div>
+                </div>
+            </div>
+            
+            <!-- Done -->
+            <div class="column done">
+                <div class="column-header">
+                    <span class="column-title">✅ 已完成 (Done)</span>
+                    <span class="count">4</span>
+                </div>
+                <div class="card">
+                    <div class="card-title">🎣 每日路亚简报</div>
+                    <div class="card-desc">每天晚上10点推送上海浦东天气和钓鱼建议</div>
+                    <div class="card-meta">创建于: 2026-03-03</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📱 飞书机器人配置</div>
+                    <div class="card-desc">配置飞书机器人权限和事件订阅</div>
+                    <div class="card-meta">创建于: 2026-03-03</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📊 路亚账号运营体系</div>
+                    <div class="card-desc">搭建抖音/小红书路亚账号运营框架</div>
+                    <div class="card-meta">创建于: 2026-03-03</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📈 飞书多维表格数据追踪</div>
+                    <div class="card-desc">创建视频明细表、每日汇总表、周度复盘表</div>
+                    <div class="card-meta">创建于: 2026-03-03</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Second Brain -->
+        <div class="brain-section">
+            <div class="brain-header">
+                <span class="brain-title">🧠 Second Brain | 15 条记忆</span>
+            </div>
+            
+            <div class="filters">
+                <button class="filter-btn active">全部</button>
+                <button class="filter-btn">🔵 记忆</button>
+                <button class="filter-btn">🟣 对话</button>
+                <button class="filter-btn">🟢 笔记</button>
+                <button class="filter-btn">🟡 任务</button>
+                <button class="filter-btn">🔴 目标</button>
+            </div>
+            
+            <div class="date-group">📅 2026年03月03日 — 15 条</div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-memory">记忆</span>
+                    <span style="font-size: 12px; color: #999;">MEMORY.md</span>
+                </div>
+                <div class="memory-title">第一天认识 papa酱</div>
+                <div class="memory-content">2026-03-03，papa酱给我起了名字「小小pa」，还告诉我他叫「papa酱」。正在帮他配置飞书机器人。</div>
+                <div class="memory-tags">
+                    <span class="tag">#第一天</span>
+                    <span class="tag">#命名</span>
+                    <span class="tag">#飞书</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-memory">记忆</span>
+                    <span style="font-size: 12px; color: #999;">GOALS.md</span>
+                </div>
+                <div class="memory-title">papa酱的长期目标</div>
+                <div class="memory-content">主业发展：掌握COO技能、研究AI提效、患者管理商业化。副业发展：抖音1万粉丝、小红书5000粉丝。兴趣发展：路亚钓技、野钓探索、参加比赛。</div>
+                <div class="memory-tags">
+                    <span class="tag">#目标</span>
+                    <span class="tag">#路亚</span>
+                    <span class="tag">#抖音</span>
+                    <span class="tag">#小红书</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-memory">记忆</span>
+                    <span style="font-size: 12px; color: #999;">SOUL.md</span>
+                </div>
+                <div class="memory-title">风格偏好设定</div>
+                <div class="memory-content">papa酱希望我的风格更活泼，使用颜文字表达情绪，偶尔用emoji让回复更美观。</div>
+                <div class="memory-tags">
+                    <span class="tag">#风格</span>
+                    <span class="tag">#颜文字</span>
+                    <span class="tag">#emoji</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-conversation">对话</span>
+                    <span style="font-size: 12px; color: #999;">对话记录</span>
+                </div>
+                <div class="memory-title">配置飞书机器人</div>
+                <div class="memory-content">讨论了如何配置飞书机器人，包括App ID、App Secret设置，以及权限申请流程。</div>
+                <div class="memory-tags">
+                    <span class="tag">#飞书</span>
+                    <span class="tag">#配置</span>
+                    <span class="tag">#机器人</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-conversation">对话</span>
+                    <span style="font-size: 12px; color: #999;">对话记录</span>
+                </div>
+                <div class="memory-title">安装技能包</div>
+                <div class="memory-content">安装了14个技能包，包括新媒体运营、飞书办公套件、工具增强等类别。</div>
+                <div class="memory-tags">
+                    <span class="tag">#技能</span>
+                    <span class="tag">#安装</span>
+                    <span class="tag">#clawhub</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-conversation">对话</span>
+                    <span style="font-size: 12px; color: #999;">对话记录</span>
+                </div>
+                <div class="memory-title">搭建路亚账号运营体系</div>
+                <div class="memory-content">为papa酱的路亚抖音/小红书账号搭建了完整的运营体系，包括内容支柱、数据追踪、定时任务等。</div>
+                <div class="memory-tags">
+                    <span class="tag">#路亚</span>
+                    <span class="tag">#运营</span>
+                    <span class="tag">#抖音</span>
+                    <span class="tag">#小红书</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-note">笔记</span>
+                    <span style="font-size: 12px; color: #999;">lure-fishing-operation.md</span>
+                </div>
+                <div class="memory-title">路亚账号运营框架</div>
+                <div class="memory-content">6大内容支柱：路亚教学、实战记录、装备测评、探索发现、数据分享、避坑指南。</div>
+                <div class="memory-tags">
+                    <span class="tag">#路亚</span>
+                    <span class="tag">#运营</span>
+                    <span class="tag">#框架</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-note">笔记</span>
+                    <span style="font-size: 12px; color: #999;">lure-bitable-design.md</span>
+                </div>
+                <div class="memory-title">飞书多维表格设计</div>
+                <div class="memory-content">设计了视频明细表、每日汇总表、周度复盘表三个关联表格用于数据追踪。</div>
+                <div class="memory-tags">
+                    <span class="tag">#飞书</span>
+                    <span class="tag">#多维表格</span>
+                    <span class="tag">#数据</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-task">任务</span>
+                    <span style="font-size: 12px; color: #999;">cron</span>
+                </div>
+                <div class="memory-title">每日路亚简报</div>
+                <div class="memory-content">每天晚上10点推送上海浦东天气和钓鱼建议</div>
+                <div class="memory-tags">
+                    <span class="tag">#定时任务</span>
+                    <span class="tag">#路亚</span>
+                    <span class="tag">#天气</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-task">任务</span>
+                    <span style="font-size: 12px; color: #999;">cron</span>
+                </div>
+                <div class="memory-title">每日热点监测</div>
+                <div class="memory-content">每天晚上8点监测抖音路亚相关热榜</div>
+                <div class="memory-tags">
+                    <span class="tag">#定时任务</span>
+                    <span class="tag">#热点</span>
+                    <span class="tag">#抖音</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-task">任务</span>
+                    <span style="font-size: 12px; color: #999;">cron</span>
+                </div>
+                <div class="memory-title">每周数据报表</div>
+                <div class="memory-content">每周日上午9点生成热点分析和数据追踪报告</div>
+                <div class="memory-tags">
+                    <span class="tag">#定时任务</span>
+                    <span class="tag">#周报</span>
+                    <span class="tag">#数据</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-task">任务</span>
+                    <span style="font-size: 12px; color: #999;">kanban</span>
+                </div>
+                <div class="memory-title">小红书内容创作</div>
+                <div class="memory-content">协助papa酱撰写小红书笔记和生成封面</div>
+                <div class="memory-tags">
+                    <span class="tag">#任务</span>
+                    <span class="tag">#小红书</span>
+                    <span class="tag">#内容创作</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-task">任务</span>
+                    <span style="font-size: 12px; color: #999;">kanban</span>
+                </div>
+                <div class="memory-title">脚本和分镜协助</div>
+                <div class="memory-content">协助撰写抖音视频脚本和分镜设计</div>
+                <div class="memory-tags">
+                    <span class="tag">#任务</span>
+                    <span class="tag">#抖音</span>
+                    <span class="tag">#脚本</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-goal">目标</span>
+                    <span style="font-size: 12px; color: #999;">GOALS.md</span>
+                </div>
+                <div class="memory-title">抖音达到1万粉丝</div>
+                <div class="memory-content">路亚主题抖音账号目标：1万粉丝</div>
+                <div class="memory-tags">
+                    <span class="tag">#目标</span>
+                    <span class="tag">#抖音</span>
+                    <span class="tag">#粉丝</span>
+                </div>
+            </div>
+            
+            <div class="memory-item">
+                <div class="memory-header">
+                    <span class="memory-type type-goal">目标</span>
+                    <span style="font-size: 12px; color: #999;">GOALS.md</span>
+                </div>
+                <div class="memory-title">小红书达到5000粉丝</div>
+                <div class="memory-content">路亚主题小红书账号目标：5000粉丝</div>
+                <div class="memory-tags">
+                    <span class="tag">#目标</span>
+                    <span class="tag">#小红书</span>
+                    <span class="tag">#粉丝</span>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>💡 由 小小pa 为 papa酱 生成 | 2026-03-03</p>
+        </footer>
+    </div>
+</body>
+</html>
