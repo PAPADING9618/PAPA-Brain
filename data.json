@@ -465,12 +465,86 @@
       "noteCount": 0
     },
     {
+      "id": "kb_wedding",
+      "icon": "💒",
+      "title": "婚礼筹备",
+      "description": "苏州婚礼与沈阳回门宴筹备资料",
+      "category": "婚礼",
+      "noteCount": 2
+    },
+    {
       "id": "kb_resources",
       "icon": "🗂️",
       "title": "资源库",
       "description": "工具、链接、模板",
       "category": "工具",
       "noteCount": 0
+    }
+  ],
+  "automationTasks": [
+    {
+      "id": "cron_daily_tasks",
+      "name": "📋 papa酱每日任务规划",
+      "status": "active",
+      "schedule": "每天 08:00",
+      "channel": "飞书消息",
+      "description": "自动生成当日任务清单并发送"
+    },
+    {
+      "id": "cron_hot_topics",
+      "name": "📊 papa酱每日热点监测",
+      "status": "active",
+      "schedule": "每天 20:00",
+      "channel": "热点追踪 + 笔记生成",
+      "description": "监测热点、归档到data.json、生成热点笔记、推送到GitHub"
+    },
+    {
+      "id": "cron_fishing_brief",
+      "name": "🎣 papa酱每日路亚简报",
+      "status": "active",
+      "schedule": "每天 22:00",
+      "channel": "路亚资讯",
+      "description": "每日路亚天气简报（双渠道发送）"
+    },
+    {
+      "id": "cron_sync",
+      "name": "🔄 工作台双向同步",
+      "status": "active",
+      "schedule": "每 4 小时",
+      "channel": "数据同步",
+      "description": "安全双向同步：先拉取→检查冲突→推送"
+    },
+    {
+      "id": "cron_bitable_sync",
+      "name": "📊 每日任务同步到飞书多维表格",
+      "status": "active",
+      "schedule": "每天 08:00",
+      "channel": "多维表格",
+      "description": "将data.json中的任务同步到飞书多维表格"
+    },
+    {
+      "id": "cron_wedding",
+      "name": "💒 婚礼规划每日跟进",
+      "status": "active",
+      "schedule": "每天 10:00",
+      "channel": "婚礼筹备",
+      "description": "发送婚礼筹备日报（苏州5.22 + 沈阳8.30）"
+    },
+    {
+      "id": "cron_calendar",
+      "name": "📅 每日飞书日历任务创建",
+      "status": "disabled",
+      "schedule": "原每天 09:00",
+      "channel": "日历",
+      "description": "已改用多维表格管理任务"
+    },
+    {
+      "id": "cron_token_refresh",
+      "name": "🔑 飞书Token自动续期",
+      "status": "disabled",
+      "schedule": "原每 2 小时",
+      "channel": "权限管理",
+      "description": "用户要求取消，如需恢复可重新启用"
     }
   ]
 }

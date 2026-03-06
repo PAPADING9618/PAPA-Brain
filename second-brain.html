@@ -675,7 +675,7 @@
                         <p>加载中...</p>
                     </div>
                 </div>
-                
+
                 <!-- 任务统计卡片 -->
                 <div class="principle-card" style="margin-top: 30px;">
                     <h3 class="section-title" style="margin-bottom: 20px;">📊 自动化任务统计</h3>
@@ -722,7 +722,7 @@
                         <!-- 知识库分类将从 data.json 动态加载 -->
                     </div>
                 </div>
-                
+
                 <!-- 分类笔记列表（点击知识库分类后显示） -->
                 <div class="section" id="knowledge-notes-section" style="display: none; margin-top: 30px;">
                     <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
@@ -736,7 +736,7 @@
                             <button onclick="showKnowledgeGrid()" style="background: var(--surface-light); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; color: var(--text); font-size: 0.85rem;">← 返回知识库</button>
                         </div>
                     </div>
-                    
+
                     <!-- AI总结区域（知识库分类专属） -->
                     <div id="knowledge-ai-summary" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border: 1px solid var(--primary); border-radius: 12px; padding: 16px; margin-bottom: 20px; display: none;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -748,11 +748,11 @@
                         </div>
                         <div id="knowledge-ai-content" style="line-height: 1.6; color: var(--text);">加载中...</div>
                     </div>
-                    
+
                     <div class="task-list" id="knowledge-notes-list">
                         <!-- 该分类下的笔记将在这里显示 -->
                     </div>
-                    
+
                     <div id="knowledge-search-empty" style="display: none; text-align: center; padding: 40px; color: var(--text-muted);">
                         <div style="font-size: 3rem; margin-bottom: 10px;">🔍</div>
                         <div>未找到匹配的笔记</div>
@@ -777,11 +777,11 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="task-list" id="notes-list">
                         <!-- 笔记将从 data.json 动态加载 -->
                     </div>
-                    
+
                     <div id="notes-search-empty" style="display: none; text-align: center; padding: 40px; color: var(--text-muted);">
                         <div style="font-size: 3rem; margin-bottom: 10px;">🔍</div>
                         <div>未找到匹配的笔记</div>
@@ -796,15 +796,15 @@
                             <h2 id="editor-title">📝 新建笔记</h2>
                             <button onclick="closeNoteEditor()" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">×</button>
                         </div>
-                        
+
                         <form id="note-form" onsubmit="saveNote(event)">
                             <input type="hidden" id="note-id" value="">
-                            
+
                             <div style="margin-bottom: 16px;">
                                 <label style="display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem;">笔记标题</label>
                                 <input type="text" id="note-title-input" required style="width: 100%; padding: 12px; border: 1px solid var(--surface-light); border-radius: 8px; background: var(--surface-light); color: var(--text); font-size: 1rem;" placeholder="输入笔记标题...">
                             </div>
-                            
+
                             <div style="margin-bottom: 16px;">
                                 <label style="display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem;">分类</label>
                                 <select id="note-category-input" style="width: 100%; padding: 12px; border: 1px solid var(--surface-light); border-radius: 8px; background: var(--surface-light); color: var(--text); font-size: 1rem;">
@@ -816,7 +816,7 @@
                                     <option value="📋 其他">📋 其他</option>
                                 </select>
                             </div>
-                            
+
                             <div style="margin-bottom: 20px;">
                                 <label style="display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem;">笔记内容（支持 Markdown 格式）</label>
                                 <textarea id="note-content-input" required style="width: 100%; padding: 12px; border: 1px solid var(--surface-light); border-radius: 8px; background: var(--surface-light); color: var(--text); font-size: 0.95rem; min-height: 300px; resize: vertical; font-family: inherit; line-height: 1.6;" placeholder="输入笔记内容...
@@ -829,7 +829,7 @@
 *斜体*
 --- 分割线"></textarea>
                             </div>
-                            
+
                             <div style="display: flex; gap: 12px; justify-content: flex-end;">
                                 <button type="button" onclick="closeNoteEditor()" style="background: var(--surface-light); border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; color: var(--text);">取消</button>
                                 <button type="submit" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; color: white;">💾 保存笔记</button>
@@ -845,12 +845,12 @@
                             <h2>🤵 新郎西装定制方案</h2>
                             <button onclick="hideNoteDetail('wedding-suit')" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">×</button>
                         </div>
-                        
+
                         <div class="note-content" style="line-height: 1.8;" data-note-content>
                             <p><strong>预算：</strong>5000元</p>
                             <p><strong>截止日期：</strong>5月31日前</p>
                             <hr style="border: none; border-top: 1px solid var(--surface-light); margin: 20px 0;">
-                            
+
                             <h3>方案A：沈阳本地上门定制（推荐）⭐</h3>
                             <p><strong>沈阳欧伟呐服饰有限公司</strong></p>
                             <ul>
@@ -983,122 +983,15 @@
                 <div class="section">
                     <div class="section-header">
                         <h3 class="section-title">🤖 自动化任务清单</h3>
+                        <span id="automation-count" style="color: var(--text-muted); font-size: 0.9rem;">加载中...</span>
                     </div>
-                    <div class="task-list">
-                        <div class="project-card">
-                            <div class="project-header">
-                                <span class="project-name">📋 papa酱每日任务规划</span>
-                                <span class="project-status status-active">运行中</span>
-                            </div>
-                            <div class="project-meta">
-                                <span>⏰ 每天 08:00</span>
-                                <span>📱 飞书消息</span>
-                            </div>
-                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
-                                自动生成当日任务清单并发送
-                            </div>
-                        </div>
-
-                        <div class="project-card">
-                            <div class="project-header">
-                                <span class="project-name">📊 papa酱每日热点监测</span>
-                                <span class="project-status status-active">运行中</span>
-                            </div>
-                            <div class="project-meta">
-                                <span>⏰ 每天 20:00</span>
-                                <span>🔍 热点追踪 + 笔记生成</span>
-                            </div>
-                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
-                                监测热点、归档到data.json、生成热点笔记、推送到GitHub
-                            </div>
-                        </div>
-
-                        <div class="project-card">
-                            <div class="project-header">
-                                <span class="project-name">🎣 papa酱每日路亚简报</span>
-                                <span class="project-status status-active">运行中</span>
-                            </div>
-                            <div class="project-meta">
-                                <span>⏰ 每天 22:00</span>
-                                <span>🎣 路亚资讯</span>
-                            </div>
-                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
-                                每日路亚天气简报（双渠道发送）
-                            </div>
-                        </div>
-
-                        <div class="project-card">
-                            <div class="project-header">
-                                <span class="project-name">🔄 工作台双向同步</span>
-                                <span class="project-status status-active">运行中</span>
-                            </div>
-                            <div class="project-meta">
-                                <span>⏰ 每 4 小时</span>
-                                <span>💻 数据同步</span>
-                            </div>
-                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
-                                安全双向同步：先拉取→检查冲突→推送
-                            </div>
-                        </div>
-
-                        <div class="project-card">
-                            <div class="project-header">
-                                <span class="project-name">📊 每日任务同步到飞书多维表格</span>
-                                <span class="project-status status-active">运行中</span>
-                            </div>
-                            <div class="project-meta">
-                                <span>⏰ 每天 08:00</span>
-                                <span>📋 多维表格</span>
-                            </div>
-                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
-                                将data.json中的任务同步到飞书多维表格
-                            </div>
-                        </div>
-
-                        <div class="project-card">
-                            <div class="project-header">
-                                <span class="project-name">💒 婚礼规划每日跟进</span>
-                                <span class="project-status status-active">运行中</span>
-                            </div>
-                            <div class="project-meta">
-                                <span>⏰ 每天 10:00</span>
-                                <span>💍 婚礼筹备</span>
-                            </div>
-                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
-                                发送婚礼筹备日报（苏州5.22 + 沈阳8.30）
-                            </div>
-                        </div>
-
-                        <div class="project-card">
-                            <div class="project-header">
-                                <span class="project-name">📅 每日飞书日历任务创建</span>
-                                <span class="project-status status-pending">已禁用</span>
-                            </div>
-                            <div class="project-meta">
-                                <span>⏰ 原每天 09:00</span>
-                                <span>📆 日历</span>
-                            </div>
-                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
-                                已改用多维表格管理任务
-                            </div>
-                        </div>
-
-                        <div class="project-card">
-                            <div class="project-header">
-                                <span class="project-name">🔑 飞书Token自动续期</span>
-                                <span class="project-status status-pending">已禁用</span>
-                            </div>
-                            <div class="project-meta">
-                                <span>⏰ 原每 2 小时</span>
-                                <span>🔐 权限管理</span>
-                            </div>
-                            <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
-                                用户要求取消，如需恢复可重新启用
-                            </div>
+                    <div class="task-list" id="automation-container">
+                        <!-- 自动化任务将从 data.json 动态加载 -->
+                        <div class="project-card" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            <p>加载中...</p>
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </div>
@@ -1159,33 +1052,38 @@
                 const cacheBuster = '?t=' + Date.now();
                 const response = await fetch('data.json' + cacheBuster);
                 const data = await response.json();
-                
+
                 // 加载项目
                 if (data.projects) {
                     renderProjects(data.projects);
                 }
-                
+
                 // 加载目标
                 if (data.goals) {
                     renderGoals(data.goals);
                 }
-                
+
                 // 加载决策原则
                 if (data.principles) {
                     renderPrinciples(data.principles);
                 }
-                
+
                 // 加载笔记
                 if (data.notes) {
                     allNotesData = data.notes; // 保存到全局变量
                     renderNotes(data.notes);
                 }
-                
+
                 // 加载知识库
                 if (data.knowledge && data.notes) {
                     renderKnowledge(data.knowledge, data.notes);
                 }
-                
+
+                // 加载自动化任务
+                if (data.automationTasks) {
+                    renderAutomationTasks(data.automationTasks);
+                }
+
                 console.log('✅ 已从 data.json 加载所有数据');
             } catch (error) {
                 console.error('加载数据失败:', error);
@@ -1309,7 +1207,7 @@
             const container = document.getElementById('notes-list');
             const emptyEl = document.getElementById('notes-search-empty');
             const aiSummarySection = document.getElementById('ai-summary-section');
-            
+
             if (!keyword.trim()) {
                 // 搜索为空，显示全部
                 renderNotes(allNotesData);
@@ -1317,7 +1215,7 @@
                 if (aiSummarySection) aiSummarySection.style.display = 'block';
                 return;
             }
-            
+
             const lowerKeyword = keyword.toLowerCase();
             const filtered = allNotesData.filter(note => {
                 // 搜索标题、分类、内容、日期
@@ -1326,7 +1224,7 @@
                        (note.content && note.content.toLowerCase().includes(lowerKeyword)) ||
                        (note.date && note.date.includes(keyword));
             });
-            
+
             if (filtered.length === 0) {
                 container.innerHTML = '';
                 emptyEl.style.display = 'block';
@@ -1402,22 +1300,22 @@
                 const response = await fetch('data.json?t=' + Date.now());
                 const data = await response.json();
                 const note = data.notes.find(n => n.id === noteId);
-                
+
                 if (!note) {
                     alert('笔记不存在');
                     return;
                 }
-                
+
                 // 创建动态弹窗
                 const modal = document.createElement('div');
                 modal.id = `dynamic-note-${noteId}`;
                 modal.className = 'note-detail';
                 modal.style.cssText = 'display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; overflow: auto;';
-                
+
                 const icon = note.category === '婚礼' ? '💒' : note.category === '学习' ? '📚' : '📄';
-                
+
                 // 简单的 Markdown 转 HTML
-                let contentHtml = note.content 
+                let contentHtml = note.content
                     ? note.content
                         .replace(/^# (.*$)/gim, '<h1 style="color: var(--text); margin: 20px 0;">$1</h1>')
                         .replace(/^## (.*$)/gim, '<h2 style="color: var(--text); margin: 18px 0;">$1</h2>')
@@ -1425,7 +1323,7 @@
                         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                         .replace(/\n/g, '<br>')
                     : '<p style="color: var(--text-muted);">暂无内容</p>';
-                
+
                 modal.innerHTML = `
                     <div class="modal" style="background: var(--surface); border-radius: 12px; padding: 24px; max-width: 800px; margin: 40px auto; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--surface-light); padding-bottom: 15px;">
@@ -1444,15 +1342,15 @@
                         </div>
                     </div>
                 `;
-                
+
                 document.body.appendChild(modal);
-                
+
             } catch (error) {
                 console.error('加载笔记失败:', error);
                 alert('加载笔记失败，请重试');
             }
         }
-        
+
         // 隐藏动态笔记弹窗
         function hideDynamicNote(noteId) {
             const modal = document.getElementById(`dynamic-note-${noteId}`);
@@ -1478,7 +1376,7 @@
             document.getElementById('note-title-input').value = '';
             document.getElementById('note-category-input').value = '📋 其他';
             document.getElementById('note-content-input').value = '';
-            
+
             const editor = document.getElementById('note-editor');
             editor.style.display = 'block';
             editor.style.position = 'fixed';
@@ -1505,10 +1403,10 @@
             // 获取笔记信息
             const titleEl = noteElement.querySelector('.task-title');
             const metaEl = noteElement.querySelector('.task-meta');
-            
+
             const title = titleEl.textContent.replace(/^[^\s]+\s/, ''); // 移除emoji
             const category = metaEl.children[0].textContent;
-            
+
             // 从详情弹窗获取内容
             const detailElement = document.getElementById('note-' + noteId);
             let content = '';
@@ -1557,12 +1455,12 @@
         // 保存笔记
         function saveNote(event) {
             event.preventDefault();
-            
+
             const noteId = document.getElementById('note-id').value;
             const title = document.getElementById('note-title-input').value;
             const category = document.getElementById('note-category-input').value;
             const content = document.getElementById('note-content-input').value;
-            
+
             if (!title || !content) {
                 alert('请填写标题和内容');
                 return;
@@ -1570,10 +1468,10 @@
 
             const date = new Date().toISOString().split('T')[0];
             const newNoteId = noteId || 'note-' + Date.now();
-            
+
             // 获取emoji
             const categoryEmoji = category.split(' ')[0];
-            
+
             if (noteId) {
                 // 编辑现有笔记
                 const noteElement = document.querySelector(`[data-note-id="${noteId}"]`);
@@ -1584,7 +1482,7 @@
                         <span>🕐 ${date}</span>
                     `;
                 }
-                
+
                 // 更新详情弹窗内容
                 const detailElement = document.getElementById('note-' + noteId);
                 if (detailElement) {
@@ -1593,7 +1491,7 @@
                         contentEl.innerHTML = formatNoteContent(content);
                     }
                 }
-                
+
                 alert('笔记已更新！');
             } else {
                 // 创建新笔记
@@ -1614,15 +1512,15 @@
                     </div>
                 `;
                 notesList.insertAdjacentHTML('afterbegin', newNoteHtml);
-                
+
                 // 创建详情弹窗
                 createNoteDetailModal(newNoteId, categoryEmoji + ' ' + title, content);
-                
+
                 alert('笔记已创建！');
             }
-            
+
             closeNoteEditor();
-            
+
             // 保存到本地存储
             saveNotesToStorage();
         }
@@ -1671,21 +1569,21 @@
             if (!confirm('确定要删除这条笔记吗？')) {
                 return;
             }
-            
+
             const noteElement = document.querySelector(`[data-note-id="${noteId}"]`);
             if (noteElement) {
                 noteElement.remove();
             }
-            
+
             // 删除详情弹窗
             const detailElement = document.getElementById('note-' + noteId);
             if (detailElement) {
                 detailElement.remove();
             }
-            
+
             // 保存到本地存储
             saveNotesToStorage();
-            
+
             alert('笔记已删除！');
         }
 
@@ -1697,7 +1595,7 @@
                 const title = item.querySelector('.task-title').textContent;
                 const category = item.querySelector('.task-meta span:first-child').textContent;
                 const date = item.querySelector('.task-meta span:last-child').textContent.replace('🕐 ', '');
-                
+
                 // 获取内容
                 const detailElement = document.getElementById('note-' + noteId);
                 let content = '';
@@ -1707,10 +1605,10 @@
                         content = contentEl.innerHTML;
                     }
                 }
-                
+
                 notes.push({ id: noteId, title, category, date, content });
             });
-            
+
             localStorage.setItem('second-brain-notes', JSON.stringify(notes));
         }
 
@@ -1746,25 +1644,59 @@
             }
         }
 
+        // 渲染自动化任务
+        function renderAutomationTasks(tasks) {
+            const container = document.getElementById('automation-container');
+            const countEl = document.getElementById('automation-count');
+
+            if (!tasks || tasks.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-muted);">暂无自动化任务</div>';
+                countEl.textContent = '';
+                return;
+            }
+
+            const activeCount = tasks.filter(t => t.status === 'active').length;
+            const disabledCount = tasks.filter(t => t.status === 'disabled').length;
+            countEl.textContent = `共 ${tasks.length} 个任务 · ${activeCount} 个运行中 · ${disabledCount} 个已禁用`;
+
+            const html = tasks.map(task => `
+                <div class="project-card">
+                    <div class="project-header">
+                        <span class="project-name">${task.name}</span>
+                        <span class="project-status status-${task.status}">${task.status === 'active' ? '运行中' : '已禁用'}</span>
+                    </div>
+                    <div class="project-meta">
+                        <span>⏰ ${task.schedule}</span>
+                        <span>${task.channel}</span>
+                    </div>
+                    <div class="project-meta" style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">
+                        ${task.description}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+
         // 渲染知识库分类
         function renderKnowledge(knowledgeList, allNotes) {
             const container = document.getElementById('knowledge-grid');
             const countEl = document.getElementById('knowledge-count');
-            
+
             if (!knowledgeList || knowledgeList.length === 0) {
                 container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-muted);">暂无知识库分类</div>';
                 countEl.textContent = '';
                 return;
             }
-            
+
             // 更新实际笔记数量
             knowledgeList.forEach(kb => {
                 kb.noteCount = allNotes.filter(n => n.category === kb.category).length;
             });
-            
+
             const totalNotes = allNotes.length;
             countEl.textContent = `共 ${knowledgeList.length} 个分类 · ${totalNotes} 条笔记`;
-            
+
             const html = knowledgeList.map(kb => `
                 <div class="kb-item" onclick="showKnowledgeNotes('${kb.id}', '${kb.category}')">
                     <div class="kb-icon">${kb.icon}</div>
@@ -1773,10 +1705,10 @@
                     <div style="margin-top: 8px; font-size: 0.75rem; color: var(--primary);">${kb.noteCount} 条笔记</div>
                 </div>
             `).join('');
-            
+
             container.innerHTML = html;
         }
-        
+
         // 全局变量存储当前知识库分类的笔记
         let currentKnowledgeNotes = [];
         let currentKnowledgeCategory = '';
@@ -1786,46 +1718,46 @@
             try {
                 const response = await fetch('data.json?t=' + Date.now());
                 const data = await response.json();
-                
+
                 const knowledge = data.knowledge?.find(k => k.id === kbId);
                 const notes = data.notes?.filter(n => n.category === category) || [];
-                
+
                 // 保存到全局变量
                 currentKnowledgeNotes = notes;
                 currentKnowledgeCategory = category;
-                
+
                 // 隐藏知识库网格，显示笔记列表
                 document.getElementById('knowledge-grid').style.display = 'none';
                 document.getElementById('knowledge-count').style.display = 'none';
-                
+
                 const notesSection = document.getElementById('knowledge-notes-section');
                 const notesTitle = document.getElementById('knowledge-notes-title');
                 const notesList = document.getElementById('knowledge-notes-list');
-                
+
                 notesTitle.innerHTML = `${knowledge?.icon || '📚'} ${knowledge?.title || category} · ${notes.length} 条笔记`;
-                
+
                 // 渲染笔记
                 renderKnowledgeNotesList(notes);
-                
+
                 // 显示AI总结区域
                 checkAndShowKnowledgeAISummary(knowledge?.title || category, notes);
-                
+
                 // 清空搜索框
                 document.getElementById('knowledge-search-input').value = '';
                 document.getElementById('knowledge-search-empty').style.display = 'none';
-                
+
                 notesSection.style.display = 'block';
-                
+
             } catch (error) {
                 console.error('加载分类笔记失败:', error);
                 alert('加载失败，请重试');
             }
         }
-        
+
         // 渲染知识库分类笔记列表
         function renderKnowledgeNotesList(notes) {
             const notesList = document.getElementById('knowledge-notes-list');
-            
+
             if (notes.length === 0) {
                 notesList.innerHTML = `
                     <div class="empty-state" style="text-align: center; padding: 40px; color: var(--text-muted);">
@@ -1850,26 +1782,26 @@
                 }).join('');
             }
         }
-        
+
         // 搜索知识库分类笔记
         function searchKnowledgeNotes(keyword) {
             const notesList = document.getElementById('knowledge-notes-list');
             const emptyEl = document.getElementById('knowledge-search-empty');
-            
+
             if (!keyword.trim()) {
                 // 搜索为空，显示全部
                 renderKnowledgeNotesList(currentKnowledgeNotes);
                 emptyEl.style.display = 'none';
                 return;
             }
-            
+
             const lowerKeyword = keyword.toLowerCase();
             const filtered = currentKnowledgeNotes.filter(note => {
                 return (note.title && note.title.toLowerCase().includes(lowerKeyword)) ||
                        (note.content && note.content.toLowerCase().includes(lowerKeyword)) ||
                        (note.date && note.date.includes(keyword));
             });
-            
+
             if (filtered.length === 0) {
                 notesList.innerHTML = '';
                 emptyEl.style.display = 'block';
@@ -1878,24 +1810,24 @@
                 emptyEl.style.display = 'none';
             }
         }
-        
+
         // 检查并显示知识库分类AI总结
         async function checkAndShowKnowledgeAISummary(categoryName, notes) {
             const summarySection = document.getElementById('knowledge-ai-summary');
             const summaryContent = document.getElementById('knowledge-ai-content');
             const summaryTime = document.getElementById('knowledge-ai-time');
-            
+
             if (!summarySection) return;
-            
+
             // 从localStorage读取缓存（按分类存储）
             const cacheKey = `knowledge_ai_summary_${currentKnowledgeCategory}`;
             const timeKey = `knowledge_ai_summary_time_${currentKnowledgeCategory}`;
             const cached = localStorage.getItem(cacheKey);
             const cachedTime = localStorage.getItem(timeKey);
-            
+
             if (cached && cachedTime) {
                 const hoursDiff = (Date.now() - parseInt(cachedTime)) / (1000 * 60 * 60);
-                
+
                 if (hoursDiff < 24) {
                     // 缓存有效（24小时内）
                     summaryContent.innerHTML = cached;
@@ -1904,47 +1836,47 @@
                     return;
                 }
             }
-            
+
             // 显示区域但提示需要生成
             summaryContent.innerHTML = `<p style="color: var(--text-muted);">🤖 AI总结可以帮助你快速了解「${categoryName}」分类的核心内容<br>点击右上角"更新总结"按钮生成（每日0点自动更新）</p>`;
             summaryTime.textContent = '';
             summarySection.style.display = 'block';
         }
-        
+
         // 生成知识库分类AI总结
         async function generateKnowledgeAISummary() {
             const summaryContent = document.getElementById('knowledge-ai-content');
             const summaryTime = document.getElementById('knowledge-ai-time');
             const btn = document.getElementById('knowledge-ai-btn');
-            
+
             if (currentKnowledgeNotes.length === 0) {
                 summaryContent.innerHTML = '<p style="color: var(--text-muted);">该分类下暂无笔记可供总结</p>';
                 return;
             }
-            
+
             // 显示加载状态
             btn.disabled = true;
             btn.textContent = '⏳ 生成中...';
             summaryContent.innerHTML = '<p style="color: var(--text-muted);">🤖 AI正在分析该分类内容，请稍候...</p>';
-            
+
             try {
                 // 分析笔记内容
                 const totalNotes = currentKnowledgeNotes.length;
                 const recentNotes = currentKnowledgeNotes.slice(0, 5); // 最近5条
-                
+
                 // 提取内容关键词和主题
                 const allContent = currentKnowledgeNotes.map(n => n.content || '').join(' ');
                 const hasWeather = allContent.includes('天气') || allContent.includes('气温') || allContent.includes('气压');
                 const hasLocation = allContent.includes('标点') || allContent.includes('钓点') || allContent.includes('位置');
                 const hasBait = allContent.includes('用饵') || allContent.includes('米诺') || allContent.includes('VIB') || allContent.includes('假饵');
                 const hasTechnique = allContent.includes('手法') || allContent.includes('操作') || allContent.includes('收线');
-                
+
                 // 提取关键信息摘要
                 const contentHighlights = recentNotes.map(note => {
                     const lines = (note.content || '').split('\n').filter(l => l.trim());
-                    const keyPoints = lines.filter(line => 
-                        line.includes('##') || 
-                        line.includes('**') || 
+                    const keyPoints = lines.filter(line =>
+                        line.includes('##') ||
+                        line.includes('**') ||
                         line.startsWith('- ') ||
                         line.includes('建议') ||
                         line.includes('推荐')
@@ -1955,7 +1887,7 @@
                         keyPoints: keyPoints
                     };
                 });
-                
+
                 // 构建深度总结HTML
                 let summaryHtml = `
                     <div style="margin-bottom: 16px;">
@@ -1965,7 +1897,7 @@
                             涵盖 ${hasWeather ? '天气分析、' : ''}${hasLocation ? '钓点标点、' : ''}${hasBait ? '用饵选择、' : ''}${hasTechnique ? '操作手法' : ''}等核心知识点。
                         </p>
                     </div>
-                    
+
                     <div style="margin-bottom: 16px;">
                         <strong>🎯 核心要点提炼</strong>
                         <div style="margin: 8px 0;">
@@ -1981,7 +1913,7 @@
                             `).join('')}
                         </div>
                     </div>
-                    
+
                     <div style="margin-bottom: 16px;">
                         <strong>💡 知识洞察</strong>
                         <ul style="margin: 8px 0; padding-left: 18px; color: var(--text-muted);">
@@ -1992,7 +1924,7 @@
                             <li>建议定期回顾笔记，形成自己的知识体系和方法论</li>
                         </ul>
                     </div>
-                    
+
                     <div>
                         <strong>📖 阅读建议</strong>
                         <p style="margin: 8px 0; color: var(--text-muted);">
@@ -2001,16 +1933,16 @@
                         </p>
                     </div>
                 `;
-                
+
                 // 保存到缓存
                 const cacheKey = `knowledge_ai_summary_${currentKnowledgeCategory}`;
                 const timeKey = `knowledge_ai_summary_time_${currentKnowledgeCategory}`;
                 localStorage.setItem(cacheKey, summaryHtml);
                 localStorage.setItem(timeKey, Date.now().toString());
-                
+
                 summaryContent.innerHTML = summaryHtml;
                 summaryTime.textContent = '(刚刚更新)';
-                
+
             } catch (error) {
                 console.error('生成AI总结失败:', error);
                 summaryContent.innerHTML = '<p style="color: var(--danger);">❌ 生成失败，请重试</p>';
