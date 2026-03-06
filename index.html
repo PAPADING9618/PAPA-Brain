@@ -2,423 +2,214 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>papa酱的工作台 - v2</title>
+    <title>papa酱工作台</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --surface-light: #334155;
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --primary: #667eea;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-        }
-        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+            background: #0f172a;
+            color: #f1f5f9;
             line-height: 1.6;
         }
-        
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 30px;
+            padding: 40px 20px;
             text-align: center;
         }
-        
-        .header h1 { font-size: 2rem; margin-bottom: 8px; }
-        .header p { opacity: 0.9; }
-        
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 30px;
+            padding: 30px 20px;
         }
-        
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        
-        .tab {
-            padding: 12px 24px;
-            background: var(--surface);
-            border: none;
-            border-radius: 8px;
-            color: var(--text);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .tab:hover { background: var(--surface-light); }
-        .tab.active { background: var(--primary); }
-        
-        .panel { display: none; }
-        .panel.active { display: block; }
-        
-        .card {
-            background: var(--surface);
+        .section {
+            background: #1e293b;
             border-radius: 12px;
-            padding: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid #334155;
+        }
+        .section h2 {
+            color: #667eea;
             margin-bottom: 20px;
-            border: 1px solid var(--surface-light);
+            font-size: 1.3rem;
         }
-        
-        .card h3 {
-            margin-bottom: 15px;
-            color: var(--primary);
-            font-size: 1.1rem;
-        }
-        
-        .task-list { display: flex; flex-direction: column; gap: 10px; }
-        
         .task-item {
-            background: var(--surface-light);
-            padding: 15px;
+            background: #334155;
+            padding: 16px;
             border-radius: 8px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        
-        .task-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--primary);
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .task-checkbox.checked {
-            background: var(--success);
-            border-color: var(--success);
-        }
-        
-        .task-content { flex: 1; }
-        .task-title { font-weight: 500; margin-bottom: 4px; }
-        .task-meta { font-size: 0.85rem; color: var(--text-muted); }
-        
+        .task-item.done { opacity: 0.5; }
+        .task-item.done .task-title { text-decoration: line-through; }
         .tag {
-            display: inline-block;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.75rem;
-            margin-right: 8px;
+            font-weight: 500;
         }
-        
-        .tag-work { background: #3b82f6; color: white; }
-        .tag-side { background: #8b5cf6; color: white; }
-        .tag-personal { background: #10b981; color: white; }
-        .tag-study { background: #f59e0b; color: white; }
-        
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
+        .tag-work { background: #3b82f6; }
+        .tag-side { background: #8b5cf6; }
+        .tag-personal { background: #10b981; }
+        .tag-study { background: #f59e0b; }
         .project-card {
-            background: var(--surface);
-            border-radius: 12px;
+            background: #334155;
             padding: 20px;
-            border: 1px solid var(--surface-light);
+            border-radius: 8px;
+            margin-bottom: 16px;
         }
-        
         .project-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
         }
-        
-        .project-name { font-weight: 600; font-size: 1.1rem; }
-        
-        .status {
+        .progress-bar {
+            height: 8px;
+            background: #1e293b;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+        }
+        .kb-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .kb-item {
+            background: #334155;
+            padding: 24px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .kb-icon { font-size: 2rem; margin-bottom: 8px; }
+        .kb-count { color: #94a3b8; font-size: 0.9rem; margin-top: 4px; }
+        .cron-item {
+            background: #334155;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cron-status {
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.75rem;
         }
-        
-        .status-active { background: var(--success); color: white; }
-        .status-pending { background: var(--warning); color: white; }
-        
-        .progress-bar {
-            height: 8px;
-            background: var(--surface-light);
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 12px 0;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), #764ba2);
-            border-radius: 4px;
-            transition: width 0.3s;
-        }
-        
-        .kb-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        
-        .kb-item {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s;
-            border: 1px solid var(--surface-light);
-        }
-        
-        .kb-item:hover { transform: translateY(-4px); }
-        .kb-icon { font-size: 2.5rem; margin-bottom: 10px; }
-        .kb-title { font-weight: 600; margin-bottom: 5px; }
-        .kb-count { font-size: 0.85rem; color: var(--text-muted); }
-        
-        .automation-list { display: flex; flex-direction: column; gap: 15px; }
-        
-        .automation-item {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid var(--surface-light);
-        }
-        
-        .automation-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .automation-name { font-weight: 600; }
-        
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: var(--text-muted);
-        }
-        
-        .error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid var(--danger);
-            color: var(--danger);
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-        }
+        .status-active { background: #10b981; }
+        .status-disabled { background: #64748b; }
+        .loading { text-align: center; padding: 40px; color: #94a3b8; }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>papa酱的工作台</h1>
-        <p>任务管理 · 项目追踪 · 知识库</p>
+        <p>任务管理 / 项目追踪 / 知识库</p>
     </div>
-    
+
     <div class="container">
-        <div class="tabs">
-            <button class="tab active" onclick="showPanel('tasks')">今日任务</button>
-            <button class="tab" onclick="showPanel('projects')">项目追踪</button>
-            <button class="tab" onclick="showPanel('knowledge')">知识库</button>
-            <button class="tab" onclick="showPanel('automation')">自动化</button>
+        <div class="section">
+            <h2>今日任务</h2>
+            <div id="tasks">加载中...</div>
         </div>
-        
-        <div id="panel-tasks" class="panel active">
-            <div class="card">
-                <h3>今日任务清单</h3>
-                <div id="task-list" class="task-list">
-                    <div class="loading">加载中...</div>
-                </div>
-            </div>
+
+        <div class="section">
+            <h2>项目追踪</h2>
+            <div id="projects">加载中...</div>
         </div>
-        
-        <div id="panel-projects" class="panel">
-            <div id="project-list" class="project-grid">
-                <div class="loading">加载中...</div>
-            </div>
+
+        <div class="section">
+            <h2>知识库</h2>
+            <div id="knowledge">加载中...</div>
         </div>
-        
-        <div id="panel-knowledge" class="panel">
-            <div id="knowledge-list" class="kb-grid">
-                <div class="loading">加载中...</div>
-            </div>
-        </div>
-        
-        <div id="panel-automation" class="panel">
-            <div id="automation-list" class="automation-list">
-                <div class="loading">加载中...</div>
-            </div>
+
+        <div class="section">
+            <h2>自动化任务</h2>
+            <div id="cron">加载中...</div>
         </div>
     </div>
-    
+
     <script>
-        let dataCache = null;
-        
-        async function loadData() {
+        async function init() {
             try {
-                const response = await fetch('data.json?t=' + Date.now());
-                dataCache = await response.json();
-                renderAll();
-            } catch (error) {
-                console.error('加载失败:', error);
-                showError('加载数据失败，请刷新重试');
+                const res = await fetch('data.json?v=' + Date.now());
+                const data = await res.json();
+
+                renderTasks(data.tasks || []);
+                renderProjects(data.projects || []);
+                renderKnowledge(data.knowledge || [], data.notes || []);
+                renderCron(data.automationTasks || []);
+            } catch (err) {
+                document.body.innerHTML = '<div style="padding:40px;text-align:center;">加载失败，请检查 data.json 是否存在</div>';
             }
         }
-        
-        function showError(msg) {
-            document.querySelectorAll('.panel').forEach(p => {
-                p.innerHTML = '<div class="error">' + msg + '</div>';
-            });
-        }
-        
-        function renderAll() {
-            if (!dataCache) return;
-            renderTasks(dataCache.tasks);
-            renderProjects(dataCache.projects);
-            renderKnowledge(dataCache.knowledge, dataCache.notes);
-            renderAutomation(dataCache.automationTasks);
-        }
-        
+
         function renderTasks(tasks) {
-            const container = document.getElementById('task-list');
-            if (!tasks || tasks.length === 0) {
-                container.innerHTML = '<div class="loading">暂无任务</div>';
-                return;
-            }
-            
-            const tagMap = {
-                'work': 'tag-work',
-                'side': 'tag-side',
-                'personal': 'tag-personal',
-                'study': 'tag-study'
-            };
-            
-            container.innerHTML = tasks.map(task => {
-                const tagClass = tagMap[task.tags?.[0]] || 'tag-work';
-                const isDone = task.status === 'done';
-                return `
-                    <div class="task-item">
-                        <div class="task-checkbox ${isDone ? 'checked' : ''}" onclick="toggleTask('${task.id}')">
-                            ${isDone ? '✓' : ''}
-                        </div>
-                        <div class="task-content">
-                            <div class="task-title" style="${isDone ? 'text-decoration: line-through; opacity: 0.6;' : ''}">${task.title}</div>
-                            <div class="task-meta">
-                                <span class="tag ${tagClass}">${task.tags?.[0] || '其他'}</span>
-                                ${task.desc || ''}
-                            </div>
-                        </div>
+            const tagColors = { work: 'tag-work', side: 'tag-side', personal: 'tag-personal', study: 'tag-study' };
+            document.getElementById('tasks').innerHTML = tasks.map(t => `
+                <div class="task-item ${t.status}">
+                    <span class="tag ${tagColors[t.tags?.[0]] || 'tag-work'}">${t.tags?.[0] || '其他'}</span>
+                    <div style="flex:1">
+                        <div class="task-title">${t.title}</div>
+                        <div style="color:#94a3b8;font-size:0.9rem">${t.desc || ''}</div>
                     </div>
-                `;
-            }).join('');
+                </div>
+            `).join('');
         }
-        
+
         function renderProjects(projects) {
-            const container = document.getElementById('project-list');
-            if (!projects || projects.length === 0) {
-                container.innerHTML = '<div class="loading">暂无项目</div>';
-                return;
-            }
-            
-            container.innerHTML = projects.map(p => `
+            document.getElementById('projects').innerHTML = projects.map(p => `
                 <div class="project-card">
                     <div class="project-header">
-                        <span class="project-name">${p.name}</span>
-                        <span class="status status-${p.status}">${p.status === 'active' ? '进行中' : '已暂停'}</span>
+                        <strong>${p.name}</strong>
+                        <span style="color:#94a3b8">${p.progress}%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${p.progress}%"></div>
+                        <div class="progress-fill" style="width:${p.progress}%"></div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-muted);">
-                        <span>进度: ${p.progress}%</span>
-                        <span>${p.target}</span>
-                    </div>
-                    <div style="margin-top: 10px; font-size: 0.85rem; color: var(--text-muted);">
-                        ${p.description}
-                    </div>
+                    <div style="color:#94a3b8;font-size:0.9rem;margin-top:8px">${p.description}</div>
                 </div>
             `).join('');
         }
-        
-        function renderKnowledge(knowledge, notes) {
-            const container = document.getElementById('knowledge-list');
-            if (!knowledge || knowledge.length === 0) {
-                container.innerHTML = '<div class="loading">暂无知识库</div>';
-                return;
-            }
-            
-            knowledge.forEach(kb => {
-                kb.noteCount = notes.filter(n => n.category === kb.category).length;
-            });
-            
-            container.innerHTML = knowledge.map(kb => `
-                <div class="kb-item" onclick="showKnowledgeNotes('${kb.category}')">
-                    <div class="kb-icon">${kb.icon}</div>
-                    <div class="kb-title">${kb.title}</div>
-                    <div class="kb-count">${kb.noteCount} 条笔记</div>
+
+        function renderKnowledge(kb, notes) {
+            kb.forEach(k => k.count = notes.filter(n => n.category === k.category).length);
+            document.getElementById('knowledge').innerHTML = `
+                <div class="kb-grid">
+                    ${kb.map(k => `
+                        <div class="kb-item">
+                            <div class="kb-icon">${k.icon}</div>
+                            <div>${k.title}</div>
+                            <div class="kb-count">${k.count} 条笔记</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderCron(tasks) {
+            document.getElementById('cron').innerHTML = tasks.map(t => `
+                <div class="cron-item">
+                    <div>
+                        <div style="font-weight:500">${t.name}</div>
+                        <div style="color:#94a3b8;font-size:0.9rem">${t.schedule} · ${t.channel}</div>
+                    </div>
+                    <span class="cron-status status-${t.status}">${t.status === 'active' ? '运行中' : '已禁用'}</span>
                 </div>
             `).join('');
         }
-        
-        function renderAutomation(tasks) {
-            const container = document.getElementById('automation-list');
-            if (!tasks || tasks.length === 0) {
-                container.innerHTML = '<div class="loading">暂无自动化任务</div>';
-                return;
-            }
-            
-            container.innerHTML = tasks.map(t => `
-                <div class="automation-item">
-                    <div class="automation-header">
-                        <span class="automation-name">${t.name}</span>
-                        <span class="status status-${t.status}">${t.status === 'active' ? '运行中' : '已禁用'}</span>
-                    </div>
-                    <div class="task-meta">
-                        ⏰ ${t.schedule} · ${t.channel}
-                    </div>
-                    <div style="margin-top: 8px; font-size: 0.9rem; color: var(--text-muted);">
-                        ${t.description}
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        function showKnowledgeNotes(category) {
-            const notes = dataCache.notes.filter(n => n.category === category);
-            alert(`分类 "${category}" 下有 ${notes.length} 条笔记`);
-        }
-        
-        function toggleTask(id) {
-            alert('任务状态切换功能需要后端支持，当前为演示模式');
-        }
-        
-        function showPanel(name) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('panel-' + name).classList.add('active');
-        }
-        
-        loadData();
+
+        init();
     </script>
 </body>
 </html>
