@@ -1155,7 +1155,9 @@
         // 从 data.json 加载所有数据
         async function loadAllData() {
             try {
-                const response = await fetch('data.json');
+                // 添加时间戳防止缓存
+                const cacheBuster = '?t=' + Date.now();
+                const response = await fetch('data.json' + cacheBuster);
                 const data = await response.json();
                 
                 // 加载项目
@@ -1397,7 +1399,7 @@
         // 显示笔记详情
         async function showNoteDetail(noteId) {
             try {
-                const response = await fetch('data.json');
+                const response = await fetch('data.json?t=' + Date.now());
                 const data = await response.json();
                 const note = data.notes.find(n => n.id === noteId);
                 
@@ -1782,7 +1784,7 @@
         // 显示知识库分类下的笔记
         async function showKnowledgeNotes(kbId, category) {
             try {
-                const response = await fetch('data.json');
+                const response = await fetch('data.json?t=' + Date.now());
                 const data = await response.json();
                 
                 const knowledge = data.knowledge?.find(k => k.id === kbId);
